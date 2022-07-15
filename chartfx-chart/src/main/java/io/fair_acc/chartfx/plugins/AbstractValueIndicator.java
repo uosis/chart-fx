@@ -4,6 +4,7 @@
 
 package io.fair_acc.chartfx.plugins;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -23,7 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.Axis;
 
 /**
@@ -267,7 +267,7 @@ public abstract class AbstractValueIndicator extends ChartPlugin {
      */
     protected final void layoutLabel(final Bounds bounds, final double hPos, final double vPos) {
         if (label.getText() == null || label.getText().isEmpty()) {
-            getChartChildren().remove(label);
+            label.setVisible(false);
             return;
         }
 

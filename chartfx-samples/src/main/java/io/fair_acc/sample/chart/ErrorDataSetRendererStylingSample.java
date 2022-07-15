@@ -5,6 +5,7 @@ import static io.fair_acc.dataset.DataSet.DIM_X;
 import java.util.*;
 import java.util.stream.Collectors;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -22,7 +23,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.marker.DefaultMarker;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -59,7 +59,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
     private ComboBox<ErrorTestDataSet.ErrorType> errorTypeCombo;
     private TextField dataSetStyle;
 
-    private void generateData(final XYChart chart) {
+    private void generateData(final Chart chart) {
         long startTime = ProcessingProfiler.getTimeStamp();
         final List<DataSetError> dataSet = new ArrayList<>();
         switch (dataSetType) {
@@ -121,7 +121,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
         startTime = ProcessingProfiler.getTimeDiff(startTime, "adding data into DataSet");
     }
 
-    private ParameterTab getAxisTab(final String name, final XYChart chart, final DefaultNumericAxis axis) {
+    private ParameterTab getAxisTab(final String name, final Chart chart, final DefaultNumericAxis axis) {
         final ParameterTab pane = new ParameterTab(name);
 
         final CheckBox animated = new CheckBox();
@@ -190,7 +190,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
         return pane;
     }
 
-    private Tab getChartTab(XYChart chart) {
+    private Tab getChartTab(Chart chart) {
         final ParameterTab pane = new ParameterTab("Chart");
 
         final CheckBox gridVisibleX = new CheckBox("");
@@ -225,7 +225,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
         return pane;
     }
 
-    private HBox getHeaderBar(final XYChart chart) {
+    private HBox getHeaderBar(final Chart chart) {
         final Button newDataSet = new Button("new DataSet");
         newDataSet.setOnAction(evt -> Platform.runLater(getTimerTask(chart)));
 
@@ -270,7 +270,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
         return new HBox(new Label("Function Type: "), dataSetTypeSelector, dataSetIncludeNaNsBox, new Label("DataSet Style:"), dataSetStyle, newDataSet, startTimer, spacer, profilerInfoBox);
     }
 
-    private ParameterTab getRendererTab(final XYChart chart, final ErrorDataSetRenderer errorRenderer) {
+    private ParameterTab getRendererTab(final Chart chart, final ErrorDataSetRenderer errorRenderer) {
         final ParameterTab pane = new ParameterTab("Renderer");
 
         final ComboBox<LineStyle> polyLineSelect = new ComboBox<>();
@@ -415,7 +415,7 @@ public class ErrorDataSetRendererStylingSample extends Application {
         return pane;
     }
 
-    public TimerTask getTimerTask(final XYChart chart) {
+    public TimerTask getTimerTask(final Chart chart) {
         return new TimerTask() {
             private int updateCount;
 
@@ -448,7 +448,8 @@ public class ErrorDataSetRendererStylingSample extends Application {
         xAxis.setMouseTransparent(true);
         final DefaultNumericAxis yAxis = new DefaultNumericAxis();
         yAxis.setUnit("Coolness");
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getXAxis().setName("x axis");
         chart.getYAxis().setName("y axis");
         chart.legendVisibleProperty().set(true);

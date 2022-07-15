@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
@@ -23,8 +24,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.shape.Line;
 import javafx.scene.text.TextAlignment;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.TickMark;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -118,7 +117,7 @@ public class GridRenderer extends Pane implements Renderer {
         return GridRenderer.CHART_CSS;
     }
 
-    protected void drawEuclideanGrid(final GraphicsContext gc, XYChart xyChart) {
+    protected void drawEuclideanGrid(final GraphicsContext gc, Chart xyChart) {
         final Axis xAxis = xyChart.getXAxis();
         final Axis yAxis = xyChart.getYAxis();
         final double xAxisWidth = xyChart.getCanvas().getWidth();
@@ -230,7 +229,7 @@ public class GridRenderer extends Pane implements Renderer {
         });
     }
 
-    protected void drawPolarGrid(final GraphicsContext gc, XYChart xyChart) {
+    protected void drawPolarGrid(final GraphicsContext gc, Chart xyChart) {
         final Axis xAxis = xyChart.getXAxis();
         final Axis yAxis = xyChart.getYAxis();
         final double xAxisWidth = xyChart.getCanvas().getWidth();
@@ -413,16 +412,15 @@ public class GridRenderer extends Pane implements Renderer {
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
             final ObservableList<DataSet> datasets) {
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
-        final XYChart xyChart = (XYChart) chart;
 
-        if (xyChart.isPolarPlot()) {
-            drawPolarGrid(gc, xyChart);
+        if (chart.isPolarPlot()) {
+            drawPolarGrid(gc, chart);
         } else {
-            drawEuclideanGrid(gc, xyChart);
+            drawEuclideanGrid(gc, chart);
         }
 
         return Collections.emptyList();

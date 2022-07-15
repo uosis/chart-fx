@@ -77,7 +77,7 @@ public class YValueIndicator extends AbstractSingleValueIndicator implements Eve
         if (getChart() == null) {
             return;
         }
-        final Bounds plotAreaBounds = getChart().getCanvas().getBoundsInLocal();
+        final Bounds plotAreaBounds = getChart().getPlotForeground().sceneToLocal(getChart().getPlotArea().localToScene(getChart().getPlotArea().getBoundsInLocal()));
         final double minX = plotAreaBounds.getMinX();
         final double maxX = plotAreaBounds.getMaxX();
         final double minY = plotAreaBounds.getMinY();
@@ -92,13 +92,12 @@ public class YValueIndicator extends AbstractSingleValueIndicator implements Eve
             axisPos = getChart().getPlotForeground().sceneToLocal(getAxis().getCanvas().localToScene(getAxis().getWidth(), 0)).getX() - 2;
             triangle.getPoints().setAll(0.0, 0.0, -8.0, 8.0, -8.0, -8.0);
         }
-        final double yPosGlobal = getChart().getPlotForeground().sceneToLocal(getChart().getCanvas().localToScene(0, yPos)).getY();
 
         if (yPos < minY || yPos > maxY) {
             getChartChildren().clear();
         } else {
             layoutLine(minX, yPos, maxX, yPos);
-            layoutMarker(axisPos, yPosGlobal, minX, yPos);
+            layoutMarker(axisPos, yPos, minX, yPos);
             layoutLabel(new BoundingBox(minX, yPos, maxX - minX, 0), getLabelPosition(),
                     AbstractSingleValueIndicator.MIDDLE_POSITION);
         }

@@ -3,6 +3,11 @@ package io.fair_acc.chartfx.renderer.spi;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.renderer.spi.utils.ColorGradient;
+import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -16,13 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.ContourType;
-import io.fair_acc.chartfx.renderer.spi.utils.ColorGradient;
-import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.chartfx.utils.FXUtils;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.GridDataSet;
@@ -55,7 +55,7 @@ public class ContourDataSetRendererTests {
     private static final double IMAGE_CMP_THRESHOLD = 0.99; // 1.0 is perfect identity
     private static final int WIDTH = 300;
     private static final int HEIGHT = 200;
-    private XYChart chart;
+    private Chart chart;
     private ContourDataSetRenderer renderer;
     private Image testImage;
 
@@ -64,7 +64,8 @@ public class ContourDataSetRendererTests {
         assertDoesNotThrow(ContourDataSetRenderer::new);
         renderer = new ContourDataSetRenderer();
         renderer.getDatasets().add(getTestDataSet());
-        chart = new XYChart(new DefaultNumericAxis(), new DefaultNumericAxis());
+        chart = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis(), new DefaultNumericAxis());
         chart.getRenderers().set(0, renderer);
         chart.legendVisibleProperty().set(true);
 
@@ -126,7 +127,7 @@ public class ContourDataSetRendererTests {
 
     @TestFx
     public void test() {
-        final ContourDataSetCache cache = new ContourDataSetCache(new XYChart(), new ContourDataSetRenderer(), getTestDataSet());
+        final ContourDataSetCache cache = new ContourDataSetCache(new Chart(), new ContourDataSetRenderer(), getTestDataSet());
         Assertions.assertDoesNotThrow(() -> cache.convertDataArrayToImage(TEST_DATA_Z, TEST_DATA_X.length, TEST_DATA_Y.length, ColorGradient.DEFAULT), "data to colour image conversion");
     }
 

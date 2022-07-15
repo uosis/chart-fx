@@ -3,6 +3,7 @@ package io.fair_acc.chartfx.renderer.spi;
 import java.security.InvalidParameterException;
 import java.util.*;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.scene.canvas.Canvas;
@@ -13,8 +14,6 @@ import javafx.scene.shape.FillRule;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
@@ -129,8 +128,8 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
-        if (!(chart instanceof XYChart)) {
+                                final ObservableList<DataSet> datasets) {
+        if (chart == null) {
             throw new InvalidParameterException("must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
 
@@ -217,7 +216,7 @@ public class ErrorDataSetRenderer extends AbstractErrorDataSetRendererParameter<
                 }
 
                 // compute local screen coordinates
-                final boolean isPolarPlot = ((XYChart) chart).isPolarPlot();
+                final boolean isPolarPlot = chart.isPolarPlot();
                 if (isParallelImplementation()) {
                     localCachedPoints.computeScreenCoordinatesInParallel(xAxis, yAxis, dataSet,
                             dataSetOffset + ldataSetIndex, indexMin, indexMax, getErrorType(), isPolarPlot,

@@ -8,15 +8,13 @@ package io.fair_acc.chartfx.utils;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.control.Label;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
-
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 
 /**
  * @author braeun
@@ -59,7 +57,7 @@ public final class XYChartUtils {
         return insets.getLeft() + insets.getRight();
     }
 
-    public static Pane getLegend(final XYChart chart) {
+    public static Pane getLegend(final Chart chart) {
         return (Pane) chart.lookup(".chart-legend");
     }
 
@@ -71,7 +69,7 @@ public final class XYChartUtils {
         return node.getLayoutY() + node.getTranslateY();
     }
 
-    public static Node getPlotContent(final XYChart chart) {
+    public static Node getPlotContent(final Chart chart) {
         return chart.lookup(".plot-content");
     }
 

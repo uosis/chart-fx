@@ -19,6 +19,7 @@ import java.util.TimerTask;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -40,8 +41,6 @@ import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.axes.spi.format.DefaultTimeFormatter;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -922,7 +921,7 @@ public class DataSetMeasurements extends AbstractChartMeasurement {
         public ExternalStage() {
             super();
 
-            XYChart chart = new XYChart(xAxis, yAxis);
+            Chart chart = new Chart();
             chart.getRenderers().setAll(new MetaDataRenderer(chart));
             chart.applyCss();
             chart.getPlugins().add(new ParameterMeasurements());

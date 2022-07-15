@@ -23,7 +23,7 @@ import io.fair_acc.chartfx.ui.css.CssPropertyFactory;
  * @author rstein
  */
 public class LogarithmicAxis extends AbstractAxis {
-    private static final CssPropertyFactory<LogarithmicAxis> CSS = new CssPropertyFactory<>(AbstractAxisParameter.getClassCssMetaData());
+    private static final CssPropertyFactory<LogarithmicAxis> CSS = new CssPropertyFactory<>(AbstractAxis.getClassCssMetaData());
     public static final double DEFAULT_LOGARITHM_BASE = 10;
     public static final double DEFAULT_LOG_MIN_VALUE = 1e-6;
     public static final double DB20_LOGARITHM_BASE = Math.exp(Math.log10(10) / 20.0);

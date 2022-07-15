@@ -1,6 +1,6 @@
 package io.fair_acc.sample.financial;
 
-import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.chartfx.renderer.spi.financial.CandleStickRenderer;
@@ -13,7 +13,7 @@ import io.fair_acc.dataset.spi.financial.OhlcvDataSet;
  * @author afischer
  */
 public class FinancialFootprintSample extends AbstractBasicFinancialApplication {
-    protected void prepareRenderers(XYChart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
+    protected void prepareRenderers(Chart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
         // create and apply renderers
         CandleStickRenderer candleStickRenderer = new CandleStickRenderer();
         candleStickRenderer.getDatasets().addAll(ohlcvDataSet);

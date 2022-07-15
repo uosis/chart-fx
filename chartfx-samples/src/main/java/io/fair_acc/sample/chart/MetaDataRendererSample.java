@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
@@ -21,7 +22,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -100,7 +100,8 @@ public class MetaDataRendererSample extends ChartSample {
         yAxis3.setSide(Side.RIGHT);
         yAxis3.setAnimated(false);
 
-        final XYChart chart = new XYChart(xAxis1, yAxis1);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis1, yAxis1);
         chart.setAnimated(false);
         final ErrorDataSetRenderer renderer1 = new ErrorDataSetRenderer();
         final ErrorDataSetRenderer renderer2 = new ErrorDataSetRenderer();

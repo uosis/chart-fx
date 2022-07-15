@@ -5,6 +5,7 @@ import static org.testfx.util.NodeQueryUtils.hasText;
 import static io.fair_acc.dataset.DataSet.DIM_X;
 import static io.fair_acc.dataset.DataSet.DIM_Y;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.geometry.Point2D;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -17,7 +18,6 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.util.DebugUtils;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -33,7 +33,7 @@ import io.fair_acc.dataset.testdata.spi.CosineFunction;
  */
 @ExtendWith(ApplicationExtension.class)
 class DataPointTooltipTest {
-    private XYChart chart;
+    private Chart chart;
     private CosineFunction ds1;
     private CosineFunction ds1Copy;
     private DataSet ds2;
@@ -45,7 +45,7 @@ class DataPointTooltipTest {
 
     @Start
     public void start(Stage stage) {
-        chart = new XYChart();
+        chart = new Chart();
         final DataPointTooltip tooltip = new DataPointTooltip();
         chart.getPlugins().add(tooltip);
         chart.setId("myChart");

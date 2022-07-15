@@ -3,6 +3,7 @@ package io.fair_acc.sample.chart;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.ObservableList;
@@ -16,7 +17,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
@@ -43,7 +43,7 @@ public class HistoryDataSetRendererSample extends ChartSample {
     private final DoubleDataSet dataSetNoError = new DoubleDataSet("TestDataNoErrors",
             HistoryDataSetRendererSample.N_SAMPLES);
 
-    private void generateData(final XYChart chart) {
+    private void generateData(final Chart chart) {
         long startTime = ProcessingProfiler.getTimeStamp();
 
         dataSetNoError.lock().writeLockGuard(() -> dataSet.lock().writeLockGuard(() -> {
@@ -91,7 +91,7 @@ public class HistoryDataSetRendererSample extends ChartSample {
         startTime = ProcessingProfiler.getTimeDiff(startTime, "adding data into DataSet");
     }
 
-    public TimerTask getTask(final XYChart chart) {
+    public TimerTask getTask(final Chart chart) {
         return new TimerTask() {
             private int updateCount;
 
@@ -125,7 +125,8 @@ public class HistoryDataSetRendererSample extends ChartSample {
         yAxis2.setAnimated(false);
         yAxis2.setSide(Side.RIGHT);
 
-        final XYChart chart = new XYChart(xAxis, yAxis1);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis1);
         chart.setLegendVisible(false);
         // set them false to make the plot faster
         chart.setAnimated(false);

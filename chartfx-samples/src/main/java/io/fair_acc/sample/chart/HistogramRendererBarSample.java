@@ -8,6 +8,8 @@ import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.dataset.spi.Histogram;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.geometry.Orientation;
@@ -26,8 +28,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -37,7 +37,6 @@ import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.LineStyle;
 import io.fair_acc.chartfx.renderer.spi.HistogramRenderer;
 import io.fair_acc.chartfx.ui.geometry.Side;
-import io.fair_acc.dataset.spi.Histogram;
 
 public class HistogramRendererBarSample extends ChartSample {
     public static final String TAG_REL = " rel.";
@@ -176,7 +175,8 @@ public class HistogramRendererBarSample extends ChartSample {
         DefaultNumericAxis yAxis2 = new DefaultNumericAxis("age group", null);
         yAxis2.setSide(Side.CENTER_VER);
 
-        XYChart chart = new XYChart(xAxis, yAxis);
+        Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.setTitle(title);
         chart.getPlugins().addAll(new Zoomer(), new DataPointTooltip(), new TableViewer(), new EditAxis());
         HBox.setHgrow(chart, Priority.ALWAYS);

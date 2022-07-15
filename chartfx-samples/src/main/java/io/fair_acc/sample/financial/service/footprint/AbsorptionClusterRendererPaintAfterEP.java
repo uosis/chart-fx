@@ -1,8 +1,8 @@
 package io.fair_acc.sample.financial.service.footprint;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.paint.Color;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.spi.financial.FootprintRenderer.EpDataAddon;
 import io.fair_acc.chartfx.renderer.spi.financial.service.DataSetAware;
@@ -25,7 +25,7 @@ public class AbsorptionClusterRendererPaintAfterEP implements RendererPaintAfter
     public static final String DATASET_ABSORPTION_BID_TRANS_COLOR = "absorptionBidTransColor";
 
     protected final DataSet ds;
-    protected final XYChart chart;
+    protected final Chart chart;
     protected final Axis xAxis;
     protected final Axis yAxis;
 
@@ -37,7 +37,7 @@ public class AbsorptionClusterRendererPaintAfterEP implements RendererPaintAfter
     private double xTo;
     private double xDiff;
 
-    public AbsorptionClusterRendererPaintAfterEP(final DataSet ohlcvDataSet, final XYChart chart) {
+    public AbsorptionClusterRendererPaintAfterEP(final DataSet ohlcvDataSet, final Chart chart) {
         this.ds = ohlcvDataSet;
         this.chart = chart;
         xAxis = chart.getXAxis();

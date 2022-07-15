@@ -9,6 +9,7 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.image.PixelFormat;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
@@ -16,7 +17,6 @@ import javafx.scene.image.WritableImage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisTransform;
 import io.fair_acc.chartfx.renderer.ContourType;
@@ -81,7 +81,7 @@ class ContourDataSetCache extends WritableImageCache {
     protected double[] tempDataBuffer;
     protected final double[] reduced;
 
-    public ContourDataSetCache(final XYChart chart, final ContourDataSetRenderer renderer, final DataSet dataSet) {
+    public ContourDataSetCache(final Chart chart, final ContourDataSetRenderer renderer, final DataSet dataSet) {
         if (dataSet.getDimension() < 3) {
             throw new IllegalArgumentException("dataSet needs be at least 3D but is " + dataSet.getDimension());
         }

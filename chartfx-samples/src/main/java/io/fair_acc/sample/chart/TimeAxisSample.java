@@ -1,5 +1,6 @@
 package io.fair_acc.sample.chart;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -7,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -58,7 +58,8 @@ public class TimeAxisSample extends ChartSample {
         xAxis1.setOverlapPolicy(AxisLabelOverlapPolicy.SKIP_ALT);
         final DefaultNumericAxis yAxis1 = new DefaultNumericAxis("y-axis", "a.u.");
 
-        final XYChart chart = new XYChart(xAxis1, yAxis1);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis1, yAxis1);
         chart.legendVisibleProperty().set(true);
         chart.getPlugins().add(new Zoomer());
         chart.getPlugins().add(new EditAxis());

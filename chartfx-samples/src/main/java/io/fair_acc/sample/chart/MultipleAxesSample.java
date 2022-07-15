@@ -5,6 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -17,7 +18,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -65,7 +65,8 @@ public class MultipleAxesSample extends ChartSample {
         yAxis3.setSide(Side.RIGHT);
         yAxis3.invertAxis(true);
         yAxis3.setAnimated(false);
-        final XYChart chart = new XYChart(xAxis1, yAxis1);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis1, yAxis1);
 
         // N.B. it's important to set secondary axis on the 2nd renderer before
         // adding the renderer to the chart
@@ -85,7 +86,7 @@ public class MultipleAxesSample extends ChartSample {
         // alternatively (uncomment):
         Zoomer.setOmitZoom(xAxis2, true);
         chart.getPlugins().add(zoom);
-        chart.getToolBar().getChildren().add(new MyZoomCheckBox(zoom, yAxis3));
+        chart.getToolBar().getItems().add(new MyZoomCheckBox(zoom, yAxis3));
         chart.getPlugins().add(new EditAxis());
 
         final Button newDataSet = new Button("new DataSet");

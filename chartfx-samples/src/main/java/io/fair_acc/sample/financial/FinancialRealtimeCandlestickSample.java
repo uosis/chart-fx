@@ -7,14 +7,13 @@ import static io.fair_acc.sample.financial.service.period.IntradayPeriod.Intrada
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.geometry.HPos;
 import javafx.scene.Scene;
 import javafx.scene.control.ToolBar;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.plugins.YRangeIndicator;
 import io.fair_acc.chartfx.plugins.YWatchValueIndicator;
@@ -113,7 +112,7 @@ public class FinancialRealtimeCandlestickSample extends AbstractBasicFinancialAp
 
             // example of addition complex extension-point to renderer
             if (renderer instanceof RendererPaintAfterEPAware) {
-                ((RendererPaintAfterEPAware) renderer).addPaintAfterEp(new PositionFinancialRendererPaintAfterEP(positionFinancialDataSet, (XYChart) chart));
+                ((RendererPaintAfterEPAware) renderer).addPaintAfterEp(new PositionFinancialRendererPaintAfterEP(positionFinancialDataSet, chart));
             }
 
             // execution platform (has to be last added to dataset)
@@ -141,7 +140,7 @@ public class FinancialRealtimeCandlestickSample extends AbstractBasicFinancialAp
         chart.getPlugins().add(createRsLevel(yAxis, 4731, 4733, "Daily Resistance"));
 
         // apply all changes by addons and extensions
-        applyColorScheme(theme, (XYChart) chart);
+        applyColorScheme(theme, chart);
 
         VBox root = new VBox();
         VBox.setVgrow(chart, Priority.SOMETIMES);
@@ -158,7 +157,7 @@ public class FinancialRealtimeCandlestickSample extends AbstractBasicFinancialAp
         return rangeIndi;
     }
 
-    protected void prepareRenderers(XYChart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
+    protected void prepareRenderers(Chart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
         // create and apply renderers
         Renderer renderer = new CandleStickRenderer(true);
         renderer.getDatasets().addAll(ohlcvDataSet);

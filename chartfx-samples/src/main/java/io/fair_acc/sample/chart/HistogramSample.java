@@ -10,13 +10,13 @@ import java.util.Locale;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -85,7 +85,8 @@ public class HistogramSample extends ChartSample {
         yAxis.setAutoRangePadding(0.2);
         yAxis.setForceZeroInRange(true);
 
-        final XYChart chart = new XYChart(xAxis2, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis2, yAxis);
         // set them false to make the plot faster
         chart.setAnimated(false);
 

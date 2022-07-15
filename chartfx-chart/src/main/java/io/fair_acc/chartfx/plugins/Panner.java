@@ -3,6 +3,7 @@ package io.fair_acc.chartfx.plugins;
 import java.util.Objects;
 import java.util.function.Predicate;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.event.EventHandler;
@@ -10,8 +11,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -139,7 +138,7 @@ public class Panner extends ChartPlugin {
     }
 
     private void panChart(final Chart chart, final Point2D mouseLocation) {
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             return;
         }
         for (final Axis axis : chart.getAxes()) {

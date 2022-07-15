@@ -5,13 +5,13 @@ import static io.fair_acc.dataset.utils.StreamUtils.CLASSPATH_PREFIX;
 
 import java.util.Locale;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.spi.AbstractAxis;
 import javafx.geometry.Insets;
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
-import io.fair_acc.chartfx.XYChart;
-import io.fair_acc.chartfx.axes.spi.AbstractAxisParameter;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.financial.CandleStickRenderer;
 import io.fair_acc.chartfx.renderer.spi.financial.FootprintRenderer;
@@ -161,7 +161,7 @@ public class FinancialColorSchemeConfig implements FinancialColorSchemeAware {
     }
 
     @Override
-    public void applyTo(String theme, String customColorScheme, XYChart chart) throws Exception {
+    public void applyTo(String theme, String customColorScheme, Chart chart) throws Exception {
         // fill global datasets
         for (DataSet dataset : chart.getDatasets()) {
             for (Renderer renderer : chart.getRenderers()) {
@@ -199,11 +199,11 @@ public class FinancialColorSchemeConfig implements FinancialColorSchemeAware {
             chart.getGridRenderer().getHorizontalMajorGrid().setVisible(true);
             chart.getGridRenderer().getHorizontalMajorGrid().setStroke(Color.DARKGREY);
             chart.getGridRenderer().getVerticalMajorGrid().setStroke(Color.DARKGREY);
-            if (chart.getXAxis() instanceof AbstractAxisParameter) {
-                ((AbstractAxisParameter) chart.getXAxis()).setTickLabelFill(Color.BLACK);
+            if (chart.getXAxis() instanceof AbstractAxis) {
+                ((AbstractAxis) chart.getXAxis()).setTickLabelFill(Color.BLACK);
             }
-            if (chart.getYAxis() instanceof AbstractAxisParameter) {
-                ((AbstractAxisParameter) chart.getYAxis()).setTickLabelFill(Color.BLACK);
+            if (chart.getYAxis() instanceof AbstractAxis) {
+                ((AbstractAxis) chart.getYAxis()).setTickLabelFill(Color.BLACK);
             }
             break;
 
@@ -215,11 +215,11 @@ public class FinancialColorSchemeConfig implements FinancialColorSchemeAware {
             chart.getGridRenderer().getHorizontalMajorGrid().setVisible(false);
             chart.getGridRenderer().getHorizontalMajorGrid().setVisible(false);
             chart.setTitlePaint(Color.WHITE);
-            if (chart.getXAxis() instanceof AbstractAxisParameter) {
-                ((AbstractAxisParameter) chart.getXAxis()).setTickLabelFill(Color.WHITESMOKE);
+            if (chart.getXAxis() instanceof AbstractAxis) {
+                ((AbstractAxis) chart.getXAxis()).setTickLabelFill(Color.WHITESMOKE);
             }
-            if (chart.getYAxis() instanceof AbstractAxisParameter) {
-                ((AbstractAxisParameter) chart.getYAxis()).setTickLabelFill(Color.WHITESMOKE);
+            if (chart.getYAxis() instanceof AbstractAxis) {
+                ((AbstractAxis) chart.getYAxis()).setTickLabelFill(Color.WHITESMOKE);
             }
             break;
 
@@ -232,18 +232,18 @@ public class FinancialColorSchemeConfig implements FinancialColorSchemeAware {
             chart.getGridRenderer().getHorizontalMinorGrid().setVisible(false);
             chart.getGridRenderer().getHorizontalMajorGrid().setStroke(Color.rgb(106, 106, 106));
             chart.setTitlePaint(Color.WHITE);
-            if (chart.getXAxis() instanceof AbstractAxisParameter) {
-                ((AbstractAxisParameter) chart.getXAxis()).setTickLabelFill(Color.rgb(194, 194, 194));
+            if (chart.getXAxis() instanceof AbstractAxis) {
+                ((AbstractAxis) chart.getXAxis()).setTickLabelFill(Color.rgb(194, 194, 194));
             }
-            if (chart.getYAxis() instanceof AbstractAxisParameter) {
-                ((AbstractAxisParameter) chart.getYAxis()).setTickLabelFill(Color.rgb(194, 194, 194));
+            if (chart.getYAxis() instanceof AbstractAxis) {
+                ((AbstractAxis) chart.getYAxis()).setTickLabelFill(Color.rgb(194, 194, 194));
             }
             break;
         }
     }
 
     @Override
-    public void applyTo(String theme, XYChart chart) throws Exception {
+    public void applyTo(String theme, Chart chart) throws Exception {
         applyTo(theme, null, chart);
     }
 

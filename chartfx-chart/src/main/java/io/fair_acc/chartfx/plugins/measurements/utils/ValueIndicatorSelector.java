@@ -6,6 +6,7 @@ import static io.fair_acc.chartfx.axes.AxisMode.Y;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.value.ChangeListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -19,7 +20,6 @@ import javafx.scene.control.MultipleSelectionModel;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.layout.GridPane;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.plugins.AbstractSingleValueIndicator;
 import io.fair_acc.chartfx.plugins.ChartPlugin;

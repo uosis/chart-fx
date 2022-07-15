@@ -7,6 +7,9 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.concurrent.ExecutionException;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -14,10 +17,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.testdata.spi.SineFunction;
 
@@ -35,7 +35,7 @@ public class DataSetSelectorTests {
 
     @Start
     public void start(Stage stage) {
-        XYChart chart = new XYChart();
+        Chart chart = new Chart();
         ParameterMeasurements plugin = new ParameterMeasurements();
 
         assertThrows(IllegalArgumentException.class, () -> new DataSetSelector(null, 0));

@@ -3,11 +3,11 @@ package io.fair_acc.sample.math.utils;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -24,7 +24,7 @@ import io.fair_acc.chartfx.ui.geometry.Side;
  * 
  * @author rstein
  */
-public class DemoChart extends XYChart {
+public class DemoChart extends Chart {
     private final List<DefaultNumericAxis> yAxes = new ArrayList<>();
     private final List<ErrorDataSetRenderer> renderer = new ArrayList<>();
 
@@ -33,7 +33,8 @@ public class DemoChart extends XYChart {
     }
 
     public DemoChart(final int nAxes) {
-        super(new DefaultNumericAxis("x-axis"), new DefaultNumericAxis("y-axis"));
+        super();
+        getAxes().addAll(new DefaultNumericAxis("x-axis"), new DefaultNumericAxis("y-axis"));
 
         if (nAxes <= 0) {
             throw new IllegalArgumentException("nAxes= " + nAxes + " must be >=1");

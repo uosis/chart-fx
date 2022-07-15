@@ -65,8 +65,7 @@ public abstract class AbstractRangeValueIndicator extends AbstractValueIndicator
      * @param upperBound upper bound (max value) of the range
      * @param text the text to be shown by the label. Value of {@link #textProperty()}.
      */
-    protected AbstractRangeValueIndicator(Axis axis, final double lowerBound, final double upperBound,
-            final String text) {
+    protected AbstractRangeValueIndicator(Axis axis, final double lowerBound, final double upperBound, final String text) {
         super(axis, text);
         setLowerBound(lowerBound);
         setUpperBound(upperBound);
@@ -139,15 +138,14 @@ public abstract class AbstractRangeValueIndicator extends AbstractValueIndicator
      */
     protected void layout(final Bounds bounds) {
         if (bounds.intersects(getChart().getCanvas().getBoundsInLocal())) {
+            showElements();
             layoutLabel(bounds, getLabelHorizontalPosition(), getLabelVerticalPosition());
             rectangle.setX(bounds.getMinX());
             rectangle.setY(bounds.getMinY());
             rectangle.setWidth(bounds.getWidth());
             rectangle.setHeight(bounds.getHeight());
-            addChildNodeIfNotPresent(rectangle);
-
         } else {
-            getChartChildren().clear();
+            hideElements();
         }
     }
 
@@ -203,5 +201,14 @@ public abstract class AbstractRangeValueIndicator extends AbstractValueIndicator
      */
     public final DoubleProperty upperBoundProperty() {
         return upperBound;
+    }
+
+    protected void hideElements() {
+        label.setVisible(false);
+        rectangle.setVisible(false);
+    }
+    protected void showElements() {
+        label.setVisible(true);
+        rectangle.setVisible(true);
     }
 }

@@ -3,7 +3,7 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.BorderPane?>
 <?import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis?>
-<?import io.fair_acc.chartfx.XYChart?>
+<?import io.fair_acc.chartfx.Chart?>
 <?import io.fair_acc.chartfx.plugins.Zoomer?>
 <?import io.fair_acc.chartfx.plugins.DataPointTooltip?>
 <?import io.fair_acc.chartfx.plugins.ParameterMeasurements?>
@@ -25,7 +25,7 @@
         </MenuBar>
     </top>
     <center>
-        <XYChart fx:id="chart" title="Some Example Plots">
+        <Chart fx:id="chart" title="Some Example Plots">
             <axes>
                 <DefaultNumericAxis side="BOTTOM" name="time" autoRanging="true"/>
                 <DefaultNumericAxis side="RIGHT" name="Amplitude" min="-3.0" max="6.0" autoRanging="false"/>
@@ -39,6 +39,6 @@
             <renderers>
                 <ErrorDataSetRenderer fx:id="errorDataSetRenderer" />
             </renderers>
-        </XYChart>
+        </Chart>
     </center>
 </BorderPane>

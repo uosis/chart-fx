@@ -70,8 +70,7 @@ public class XValueIndicator extends AbstractSingleValueIndicator implements Eve
         if (getChart() == null) {
             return;
         }
-
-        final Bounds plotAreaBounds = getChart().getCanvas().getBoundsInLocal();
+        final Bounds plotAreaBounds = getChart().getPlotForeground().sceneToLocal(getChart().getPlotArea().localToScene(getChart().getPlotArea().getBoundsInLocal()));
         final double minX = plotAreaBounds.getMinX();
         final double maxX = plotAreaBounds.getMaxX();
         final double minY = plotAreaBounds.getMinY();
@@ -85,13 +84,13 @@ public class XValueIndicator extends AbstractSingleValueIndicator implements Eve
             triangle.getPoints().setAll(0.0, 0.0, -8.0, -8.0, 8.0, -8.0);
             axisPos = getChart().getPlotForeground().sceneToLocal(getAxis().getCanvas().localToScene(0, getAxis().getHeight())).getY() - 6;
         }
-        final double xPosGlobal = getChart().getPlotForeground().sceneToLocal(getChart().getCanvas().localToScene(xPos, 0)).getX();
 
         if (xPos < minX || xPos > maxX) {
-            getChartChildren().clear();
+            hideElements();
         } else {
+            showElements();
             layoutLine(xPos, minY, xPos, maxY);
-            layoutMarker(xPosGlobal, axisPos + 4, xPos, maxY);
+            layoutMarker(xPos, axisPos + 4, xPos, maxY);
 
             layoutLabel(new BoundingBox(xPos, minY, 0, maxY - minY), AbstractSingleValueIndicator.MIDDLE_POSITION,
                     getLabelPosition());

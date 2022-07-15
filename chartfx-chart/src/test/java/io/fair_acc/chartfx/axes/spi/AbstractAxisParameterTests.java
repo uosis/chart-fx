@@ -28,7 +28,7 @@ import io.fair_acc.chartfx.ui.geometry.Side;
 class AbstractAxisParameterTests {
     @Test
     void testAutoGetterSetters() {
-        AbstractAxisParameter axis = new EmptyAbstractAxisParameter();
+        AbstractAxis axis = new EmptyAbstractAxis();
         axis.set(0.0, 10.0);
 
         assertNull(axis.getRange());
@@ -67,7 +67,7 @@ class AbstractAxisParameterTests {
 
     @Test
     void testBasicGetterSetters() {
-        AbstractAxisParameter axis = new EmptyAbstractAxisParameter();
+        AbstractAxis axis = new EmptyAbstractAxis();
         axis.set(0.0, 10.0);
 
         assertFalse(axis.isValid());
@@ -188,13 +188,6 @@ class AbstractAxisParameterTests {
         assertEquals("test axis name", axis.getName());
         assertEquals(1e6, axis.getTickUnit());
 
-        // test String helper
-        assertTrue(AbstractAxisParameter.equalString("String#1", "String#1"));
-        assertFalse(AbstractAxisParameter.equalString("String#1", "String#2"));
-        assertFalse(AbstractAxisParameter.equalString("String#1", null));
-        assertFalse(AbstractAxisParameter.equalString(null, "String#2"));
-        assertTrue(AbstractAxisParameter.equalString(null, null));
-
         // style definitions must be non-null
         assertNotNull(axis.getCssMetaData());
 
@@ -206,7 +199,7 @@ class AbstractAxisParameterTests {
 
     @Test
     void testPositionGetterSetters() {
-        AbstractAxisParameter axis = new EmptyAbstractAxisParameter();
+        AbstractAxis axis = new EmptyAbstractAxis();
         axis.set(0.0, 10.0);
 
         assertEquals(0.5, axis.getAxisCenterPosition());
@@ -228,7 +221,7 @@ class AbstractAxisParameterTests {
 
     @Test
     void testTickLabelGetterSetters() {
-        AbstractAxisParameter axis = new EmptyAbstractAxisParameter();
+        AbstractAxis axis = new EmptyAbstractAxis();
         axis.set(0.0, 10.0);
 
         axis.setTickLabelFill(Color.RED);
@@ -269,7 +262,7 @@ class AbstractAxisParameterTests {
 
     @Test
     void testTickMarkGetterSetters() {
-        AbstractAxisParameter axis = new EmptyAbstractAxisParameter();
+        AbstractAxis axis = new EmptyAbstractAxis();
         axis.set(0.0, 10.0);
 
         assertEquals(20, axis.getMaxMajorTickLabelCount());
@@ -319,7 +312,12 @@ class AbstractAxisParameterTests {
         assertNotNull(axis.getMinorTickStyle());
     }
 
-    protected static class EmptyAbstractAxisParameter extends AbstractAxisParameter {
+    protected static class EmptyAbstractAxis extends AbstractAxis {
+        @Override
+        public double computePreferredTickUnit(final double axisLength) {
+            return 0;
+        }
+
         @Override
         public void drawAxis(GraphicsContext gc, double axisWidth, double axisHeight) {
             // deliberately not implemented
@@ -396,6 +394,26 @@ class AbstractAxisParameterTests {
         @Override
         public void requestAxisLayout() {
             // deliberately not implemented
+        }
+
+        @Override
+        protected AxisRange autoRange(final double minValue, final double maxValue, final double length, final double labelSize) {
+            return null;
+        }
+
+        @Override
+        protected List<Double> calculateMajorTickValues(final double length, final AxisRange range) {
+            return null;
+        }
+
+        @Override
+        protected List<Double> calculateMinorTickValues() {
+            return null;
+        }
+
+        @Override
+        protected AxisRange computeRange(final double minValue, final double maxValue, final double axisLength, final double labelSize) {
+            return null;
         }
 
         @Override

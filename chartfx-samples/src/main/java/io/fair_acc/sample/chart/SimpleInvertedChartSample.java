@@ -1,5 +1,6 @@
 package io.fair_acc.sample.chart;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.CheckBox;
@@ -12,7 +13,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.CrosshairIndicator;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -42,7 +42,8 @@ public class SimpleInvertedChartSample extends ChartSample {
         yAxis.setAutoGrowRanging(false);
         yAxis.set(-2.0, +2.0); // auto-range padding is overwritten by user-defined range
 
-        final var chart = new XYChart(xAxis, yAxis);
+        final var chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getPlugins().addAll(new Zoomer(), new CrosshairIndicator(), new EditAxis()); // standard plugin, useful for most cases
 
         final var dataSet1 = new DoubleDataSet("data set #1");

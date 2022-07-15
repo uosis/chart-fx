@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.stream.Collectors;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.Tab;
@@ -23,8 +24,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.marker.DefaultMarker;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -166,7 +165,8 @@ public class ScatterAndBubbleRendererSample extends ChartSample {
         DefaultNumericAxis yAxis = new DefaultNumericAxis("life-expectancy", "years");
         yAxis.setAutoRangePadding(0.05);
 
-        XYChart chart = new XYChart(xAxis, yAxis);
+        Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.setTitle(title);
         chart.getPlugins().add(new Zoomer());
         chart.getPlugins().add(new DataPointTooltip());

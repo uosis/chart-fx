@@ -1,5 +1,6 @@
 package io.fair_acc.sample.chart;
 
+import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import javafx.application.Application;
 import javafx.scene.Node;
@@ -9,7 +10,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.CrosshairIndicator;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -32,7 +32,8 @@ public class SimpleChartSample extends ChartSample {
         yAxis.setAutoRanging(true); // default: true
         yAxis.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
 
-        final XYChart chart = new XYChart(new DefaultNumericAxis(), yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis(), yAxis);
         chart.getPlugins().addAll(new Zoomer(), new CrosshairIndicator(), new EditAxis()); // standard plugin, useful for most cases
 
         final DoubleDataSet dataSet1 = new DoubleDataSet("data set #1");

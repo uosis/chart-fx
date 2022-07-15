@@ -13,6 +13,7 @@ import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.stream.Collectors;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.binding.Bindings;
@@ -45,7 +46,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.utils.FXUtils;
 import io.fair_acc.dataset.DataSet;
@@ -110,15 +110,14 @@ public class TableViewer extends ChartPlugin {
         chartProperty().addListener((change, oldChart, newChart) -> {
             if (oldChart != null) {
                 // plugin has already been initialised for old chart
-                oldChart.getToolBar().getChildren().remove(interactorButtons);
+                oldChart.getToolBar().getItems().remove(interactorButtons);
                 oldChart.getPlotForeground().getChildren().remove(table);
-                oldChart.getPlotArea().setBottom(null);
                 table.prefWidthProperty().unbind();
                 table.prefHeightProperty().unbind();
             }
             if (newChart != null) {
                 if (isAddButtonsToToolBar()) {
-                    newChart.getToolBar().getChildren().add(interactorButtons);
+                    newChart.getToolBar().getItems().add(interactorButtons);
                 }
             }
             dsModel.chartChanged(oldChart, newChart);
@@ -130,9 +129,9 @@ public class TableViewer extends ChartPlugin {
                 return;
             }
             if (Boolean.TRUE.equals(n)) {
-                chartLocal.getToolBar().getChildren().add(interactorButtons);
+                chartLocal.getToolBar().getItems().add(interactorButtons);
             } else {
-                chartLocal.getToolBar().getChildren().remove(interactorButtons);
+                chartLocal.getToolBar().getItems().remove(interactorButtons);
             }
         });
     }

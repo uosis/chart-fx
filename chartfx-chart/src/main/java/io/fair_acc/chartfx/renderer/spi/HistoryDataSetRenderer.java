@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -13,8 +14,6 @@ import javafx.scene.canvas.GraphicsContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -152,9 +151,9 @@ public class HistoryDataSetRenderer extends ErrorDataSetRenderer implements Rend
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
+                                final ObservableList<DataSet> datasets) {
         final long start = ProcessingProfiler.getTimeStamp();
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }

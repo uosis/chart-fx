@@ -3,6 +3,7 @@ package io.fair_acc.chartfx.plugins;
 import java.util.LinkedList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -11,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.event.EventType;
+import javafx.geometry.Bounds;
 import javafx.geometry.Point2D;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
@@ -22,8 +24,6 @@ import javafx.util.Pair;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.dataset.spi.utils.Tuple;
 
@@ -69,6 +69,22 @@ public abstract class ChartPlugin {
                 addEventHandlers(newChart.getPlotBackground());
             }
         });
+    }
+
+    /**
+     * limits the mouse event position to the min/max range of the canvas (N.B. event can occur to be
+     * negative/larger/outside than the canvas) This is to avoid zooming outside the visible canvas range
+     *
+     * @param event the mouse event
+     * @param plotBounds of the canvas
+     * @return the clipped mouse location
+     */
+    protected static Point2D limitToPlotArea(final MouseEvent event, final Bounds plotBounds) {
+        final double limitedX = Math.max(Math.min(event.getX() - plotBounds.getMinX(), plotBounds.getMaxX()),
+                plotBounds.getMinX());
+        final double limitedY = Math.max(Math.min(event.getY() - plotBounds.getMinY(), plotBounds.getMaxY()),
+                plotBounds.getMinY());
+        return new Point2D(limitedX, limitedY);
     }
 
     /**
@@ -144,12 +160,11 @@ public abstract class ChartPlugin {
     protected final Point2D getLocationInPlotArea(final MouseEvent event) {
         final Point2D mouseLocationInScene = new Point2D(event.getSceneX(), event.getSceneY());
         final Chart chart = getChart();
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             return null;
         }
-        final XYChart xyChart = (XYChart) chart;
-        final double xInAxis = ((Node) xyChart.getXAxis()).sceneToLocal(mouseLocationInScene).getX();
-        final double yInAxis = ((Node) xyChart.getYAxis()).sceneToLocal(mouseLocationInScene).getY();
+        final double xInAxis = ((Node) chart.getXAxis()).sceneToLocal(mouseLocationInScene).getX();
+        final double yInAxis = ((Node) chart.getYAxis()).sceneToLocal(mouseLocationInScene).getY();
         return new Point2D(xInAxis, yInAxis);
     }
 
@@ -242,32 +257,19 @@ public abstract class ChartPlugin {
      * Converts given display point within the plot area coordinates to the corresponding data point within data
      * coordinates.
      *
-     * @param yAxis the number-based y axis
+     * @param yAxis the number-based y-axis
      * @param displayPoint the display point to be converted
      * @return the data point
      */
     protected final Tuple<Number, Number> toDataPoint(final Axis yAxis, final Point2D displayPoint) {
         final Chart chart = getChart();
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             if (LOGGER.isWarnEnabled()) {
-                LOGGER.atWarn().addArgument(chart).log("chart '{}' is not of type XYChart returning null");
+                LOGGER.atWarn().log("chart is null");
             }
             return null;
         }
-        final XYChart xyChart = (XYChart) chart;
-        return new Tuple<>(xyChart.getXAxis().getValueForDisplay(displayPoint.getX()),
+        return new Tuple<>(chart.getXAxis().getValueForDisplay(displayPoint.getX()),
                 yAxis.getValueForDisplay(displayPoint.getY()));
-    }
-
-    /**
-     * Converts given point in data coordinates to a point in display coordinates.
-     *
-     * @param yAxis the corresponding y-axis (number axis)
-     * @param x the X coordinate (can be generic non-number, ie. CategoryAxis)
-     * @param y the Y coordinate on the yAxis (Number based)
-     * @return corresponding display point within the plot area
-     */
-    protected final Point2D toDisplayPoint(final Axis yAxis, final double x, final double y) {
-        return new Point2D(((XYChart) getChart()).getXAxis().getDisplayPosition(x), yAxis.getDisplayPosition(y));
     }
 }

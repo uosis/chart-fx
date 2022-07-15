@@ -4,6 +4,7 @@ import static io.fair_acc.dataset.spi.AbstractHistogram.HistogramOuterBounds.BIN
 
 import java.util.*;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.binding.Bindings;
@@ -14,7 +15,6 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.LineStyle;
@@ -29,7 +29,7 @@ public class HistogramBasicSample extends ChartSample {
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
-        final XYChart chart = new XYChart();
+        final Chart chart = new Chart();
 
         final ErrorDataSetRenderer renderer1 = new ErrorDataSetRenderer();
         renderer1.setPolyLineStyle(LineStyle.HISTOGRAM_FILLED);

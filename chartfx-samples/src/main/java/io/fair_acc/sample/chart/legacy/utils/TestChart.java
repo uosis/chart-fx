@@ -1,9 +1,8 @@
 package io.fair_acc.sample.chart.legacy.utils;
 
-import javafx.application.Application;
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Node;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.datareduction.DefaultDataReducer;
@@ -14,7 +13,7 @@ import io.fair_acc.dataset.testdata.spi.SineFunction;
 
 public class TestChart extends AbstractTestApplication implements ChartTestCase {
     protected int nSamples = MAX_DATA_POINTS_100K;
-    protected final XYChart chart;
+    protected final Chart chart;
     protected final DefaultNumericAxis xAxis = new DefaultNumericAxis();
     protected final DefaultNumericAxis yAxis = new DefaultNumericAxis("irrelevant y-axis test case 2", -1.1, +1.1, 0.2);
     protected SineFunction testFunction = new SineFunction("test", nSamples, true);
@@ -25,7 +24,8 @@ public class TestChart extends AbstractTestApplication implements ChartTestCase 
     }
 
     public TestChart(final boolean altRenderer) {
-        chart = new XYChart(xAxis, yAxis);
+        chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.legendVisibleProperty().set(true);
         chart.setAnimated(false);
         chart.setLegendVisible(false);

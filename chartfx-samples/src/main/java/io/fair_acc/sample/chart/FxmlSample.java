@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXML;
@@ -15,7 +16,6 @@ import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.dataset.testdata.spi.CosineFunction;
 import io.fair_acc.dataset.testdata.spi.GaussFunction;
@@ -42,7 +42,7 @@ public class FxmlSample extends ChartSample implements Initializable {
     @FXML
     private MenuItem mExit;
     @FXML
-    private XYChart chart;
+    private Chart chart;
     @FXML
     private ErrorDataSetRenderer errorDataSetRenderer;
 

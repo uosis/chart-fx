@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -16,7 +17,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Panner;
@@ -40,7 +40,8 @@ public class MountainRangeRendererSample extends ChartSample {
         final DefaultNumericAxis xAxis = new DefaultNumericAxis("X Position");
         final DefaultNumericAxis yAxis = new DefaultNumericAxis("Y Position");
 
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.setTitle("Test data");
         final MountainRangeRenderer mountainRangeRenderer = new MountainRangeRenderer();
         chart.getRenderers().set(0, mountainRangeRenderer);

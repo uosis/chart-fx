@@ -73,7 +73,7 @@ public class ParameterMeasurements extends ChartPlugin {
         chartProperty().addListener((change, oldChart, newChart) -> {
             if (oldChart != null) {
                 // remove tool bar items
-                oldChart.getToolBar().getChildren().remove(parameterMenu);
+                oldChart.getToolBar().getItems().remove(parameterMenu);
 
                 // remove measurement display pane
                 oldChart.getMeasurementBar(side).getChildren().remove(dataView);
@@ -82,7 +82,7 @@ public class ParameterMeasurements extends ChartPlugin {
             if (newChart != null) {
                 if (addToToolBar) {
                     // add tool bar items
-                    newChart.getToolBar().getChildren().add(parameterMenu);
+                    newChart.getToolBar().getItems().add(parameterMenu);
                 }
 
                 // add measurement display pane

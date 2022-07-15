@@ -5,6 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.security.InvalidParameterException;
 import java.util.Calendar;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConfig;
+import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants;
+import io.fair_acc.chartfx.renderer.spi.financial.service.OhlcvRendererEpData;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.paint.Color;
@@ -16,19 +22,13 @@ import org.opentest4j.AssertionFailedError;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConfig;
-import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants;
-import io.fair_acc.chartfx.renderer.spi.financial.service.OhlcvRendererEpData;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.CalendarUtils;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.FinancialTestUtils;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.FinancialTestUtils.TestChart;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.Interval;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.AbstractDataSet;
 import io.fair_acc.dataset.spi.financial.OhlcvDataSet;
@@ -38,7 +38,7 @@ import io.fair_acc.dataset.utils.ProcessingProfiler;
 @ExtendWith(JavaFXInterceptorUtils.SelectiveJavaFxInterceptor.class)
 class HighLowRendererTest {
     private HighLowRenderer rendererTested;
-    private XYChart chart;
+    private Chart chart;
     private OhlcvDataSet ohlcvDataSet;
 
     @Start
@@ -63,7 +63,8 @@ class HighLowRendererTest {
         yAxis.setAutoRanging(false);
 
         // prepare chart structure
-        chart = new XYChart(xAxis, yAxis);
+        chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getGridRenderer().setDrawOnTop(false);
 
         rendererTested.getDatasets().add(ohlcvDataSet);
@@ -91,7 +92,7 @@ class HighLowRendererTest {
         ohlcvDataSet.setCategoryBased(true);
 
         chart.getAxes().add(0, xAxis);
-        chart.layoutChildren();
+        //chart.layoutChildren();
     }
 
     @TestFx
@@ -117,7 +118,7 @@ class HighLowRendererTest {
             AssertionFailedError e = null;
         };
         rendererTested.addPaintAfterEp(data -> ref.e = new AssertionFailedError("The renderer method cannot be call, because dimensions are lower as required!"));
-        chart.layoutChildren();
+        // chart.layoutChildren();
         if (ref.e != null) {
             throw ref.e;
         }

@@ -7,6 +7,7 @@ import java.util.Random;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.animation.Animation;
 import javafx.animation.RotateTransition;
 import javafx.application.Application;
@@ -39,7 +40,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
 import io.fair_acc.chartfx.plugins.TableViewer;
@@ -155,7 +155,7 @@ public class DataViewerSample extends ChartSample {
 
     private void addChartToView(DataView view1, final ComboBox<WindowDecoration> windowDecoration, final ComboBox<InitialWindowState> initialWindowState) {
         final int count = view1.getVisibleChildren().size() + view1.getMinimisedChildren().size();
-        final XYChart jChart = createChart();
+        final Chart jChart = createChart();
         final DataViewWindow newDataViewerPane = new DataViewWindow("Chart" + count, jChart, windowDecoration.getValue());
         switch (initialWindowState.getValue()) {
         case DETACHED:
@@ -202,7 +202,7 @@ public class DataViewerSample extends ChartSample {
     }
 
     private DataViewWindow setupJDataViewPane() {
-        final XYChart jDataViewerChart = createChart();
+        final Chart jDataViewerChart = createChart();
         final DataViewWindow jDataViewerPane = new DataViewWindow("Chart", jDataViewerChart);
         jDataViewerPane.addListener(dataWindowEventListener);
         logStatePropertyChanges(jDataViewerPane.getName(), jDataViewerPane);
@@ -210,7 +210,7 @@ public class DataViewerSample extends ChartSample {
     }
 
     private DataViewWindow setupEnergyView() {
-        final XYChart energyChart = new TestChart();
+        final Chart energyChart = new TestChart();
         energyChart.getYAxis().setName("Energy");
         energyChart.getDatasets().addAll(createSeries());
 
@@ -222,7 +222,7 @@ public class DataViewerSample extends ChartSample {
     }
 
     private DataViewWindow setupCurrentView() {
-        final XYChart currentChart = new TestChart();
+        final Chart currentChart = new TestChart();
         currentChart.getRenderers().clear();
         final ErrorDataSetRenderer errorDataSetRenderer = new ErrorDataSetRenderer();
         errorDataSetRenderer.setErrorType(ErrorStyle.NONE);
@@ -243,8 +243,8 @@ public class DataViewerSample extends ChartSample {
      *
      * @return the Swing-based chart component
      */
-    private XYChart createChart() {
-        final XYChart chart = new TestChart();
+    private Chart createChart() {
+        final Chart chart = new TestChart();
         chart.getXAxis().set("time", "s");
         chart.getYAxis().set("y-axis", "A");
 
@@ -341,7 +341,7 @@ public class DataViewerSample extends ChartSample {
         DETACHED
     }
 
-    private static class TestChart extends XYChart {
+    private static class TestChart extends Chart {
         private TestChart() {
             super();
             getPlugins().add(new ParameterMeasurements());

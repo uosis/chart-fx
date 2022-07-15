@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Predicate;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
@@ -45,8 +46,6 @@ import javafx.util.Pair;
 
 import org.kordamp.ikonli.javafx.FontIcon;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.utils.FXUtils;
@@ -183,7 +182,6 @@ public class EditDataSet extends TableViewer {
         chartProperty().addListener((change, o, n) -> {
             if (o != null) {
                 o.getCanvasForeground().getChildren().remove(markerPane);
-                o.getPlotArea().setBottom(null);
                 // markerPane.prefWidthProperty().unbind();
                 // markerPane.prefHeightProperty().unbind();
             }
@@ -198,11 +196,9 @@ public class EditDataSet extends TableViewer {
     }
 
     protected void addPoint(final double x, final double y) {
-        if (!(getChart() instanceof XYChart)) {
+        if (getChart() == null) {
             return;
         }
-        final XYChart xyChart = (XYChart) getChart();
-
         // TODO: tidy up code and make it compatible with multiple renderer
 
         // find data set closes to screen coordinate x & y
@@ -214,8 +210,8 @@ public class EditDataSet extends TableViewer {
         final DataPoint dataPoint = findNearestDataPoint(getChart(), new Point2D(x - x0, y - y0));
 
         if (dataPoint != null && (dataPoint.getDataSet() instanceof EditableDataSet)) {
-            final Axis xAxis = xyChart.getFirstAxis(Orientation.HORIZONTAL);
-            final Axis yAxis = xyChart.getFirstAxis(Orientation.VERTICAL);
+            final Axis xAxis = getChart().getFirstAxis(Orientation.HORIZONTAL);
+            final Axis yAxis = getChart().getFirstAxis(Orientation.VERTICAL);
             final int index = dataPoint.getIndex();
             final double newValX = xAxis.getValueForDisplay(x - x0);
             final double newValY = yAxis.getValueForDisplay(y - y0);
@@ -317,18 +313,17 @@ public class EditDataSet extends TableViewer {
     }
 
     protected DataPoint findNearestDataPoint(final Chart chart, final Point2D mouseLocation) {
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             return null;
         }
-        final XYChart xyChart = (XYChart) chart;
         // TODO: iterate through all axes, renderer and datasets
-        final double xValue = xyChart.getXAxis().getValueForDisplay(mouseLocation.getX());
+        final double xValue = chart.getXAxis().getValueForDisplay(mouseLocation.getX());
 
         DataPoint nearestDataPoint = null;
-        for (final DataPoint dataPoint : findNeighborPoints(xyChart, xValue)) {
+        for (final DataPoint dataPoint : findNeighborPoints(chart, xValue)) {
             if (getChart().getFirstAxis(Orientation.HORIZONTAL) != null) {
-                final double x = xyChart.getXAxis().getDisplayPosition(dataPoint.getX());
-                final double y = xyChart.getYAxis().getDisplayPosition(dataPoint.getY());
+                final double x = chart.getXAxis().getDisplayPosition(dataPoint.getX());
+                final double y = chart.getYAxis().getDisplayPosition(dataPoint.getY());
                 final Point2D displayPoint = new Point2D(x, y);
                 dataPoint.setDistanceFromMouse(displayPoint.distance(mouseLocation));
                 if ((nearestDataPoint == null
@@ -376,7 +371,7 @@ public class EditDataSet extends TableViewer {
         return new Pair<>(prevPoint, nextPoint);
     }
 
-    protected List<DataPoint> findNeighborPoints(final XYChart chart, final double searchedX) {
+    protected List<DataPoint> findNeighborPoints(final Chart chart, final double searchedX) {
         final List<DataPoint> points = new LinkedList<>();
         for (final DataSet dataSet : chart.getAllDatasets()) {
             final Pair<DataPoint, DataPoint> neighborPoints = findNeighborPoints(dataSet, searchedX);
@@ -573,21 +568,21 @@ public class EditDataSet extends TableViewer {
     }
 
     protected void performSelection() {
-        if (!(getChart() instanceof XYChart)) {
+        if (getChart() == null) {
             return;
         }
-        final XYChart xyChart = (XYChart) getChart();
+        final Chart chart = getChart();
 
         if (!isShiftDown()) {
             markedPoints.clear();
         }
 
-        findDataPoint(xyChart.getFirstAxis(Orientation.HORIZONTAL), xyChart.getFirstAxis(Orientation.VERTICAL),
-                xyChart.getDatasets());
+        findDataPoint(chart.getFirstAxis(Orientation.HORIZONTAL), chart.getFirstAxis(Orientation.VERTICAL),
+                chart.getDatasets());
 
-        for (final Renderer rend : xyChart.getRenderers()) {
+        for (final Renderer rend : chart.getRenderers()) {
             final ObservableList<Axis> axes = rend.getAxes();
-            findDataPoint(getFirstAxis(axes, Orientation.HORIZONTAL), getFirstAxis(axes, Orientation.VERTICAL),
+            findDataPoint(Chart.getFirstAxis(axes, Orientation.HORIZONTAL), Chart.getFirstAxis(axes, Orientation.VERTICAL),
                     rend.getDatasets());
         }
 
@@ -740,50 +735,12 @@ public class EditDataSet extends TableViewer {
         }
     }
 
-    private static Axis getFirstAxis(final List<Axis> axes, final Orientation orientation) {
-        for (final Axis axis : axes) {
-            if (axis.getSide() == null) {
-                continue;
-            }
-            switch (orientation) {
-            case VERTICAL:
-                if (axis.getSide().isVertical()) {
-                    return axis;
-                }
-                break;
-            case HORIZONTAL:
-            default:
-                if (axis.getSide().isHorizontal()) {
-                    return axis;
-                }
-                break;
-            }
-        }
-        return null;
-    }
-
     public static boolean isControlDown() {
         return controlDown;
     }
 
     public static boolean isShiftDown() {
         return shiftDown;
-    }
-
-    /**
-     * limits the mouse event position to the min/max range of the canvas (N.B. event can occur to be
-     * negative/larger/outside than the canvas) This is to avoid zooming outside the visible canvas range
-     *
-     * @param event the mouse event
-     * @param plotBounds of the canvas
-     * @return the clipped mouse location
-     */
-    private static Point2D limitToPlotArea(final MouseEvent event, final Bounds plotBounds) {
-        final double limitedX = Math.max(Math.min(event.getX() - plotBounds.getMinX(), plotBounds.getMaxX()),
-                plotBounds.getMinX());
-        final double limitedY = Math.max(Math.min(event.getY() - plotBounds.getMinY(), plotBounds.getMaxY()),
-                plotBounds.getMinY());
-        return new Point2D(limitedX, limitedY);
     }
 
     public static class DataPoint {

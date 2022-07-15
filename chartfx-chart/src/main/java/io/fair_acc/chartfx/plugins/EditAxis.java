@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.beans.property.BooleanProperty;
@@ -40,7 +41,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.AbstractAxis;

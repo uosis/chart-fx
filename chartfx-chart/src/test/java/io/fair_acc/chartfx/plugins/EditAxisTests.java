@@ -2,6 +2,7 @@ package io.fair_acc.chartfx.plugins;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -12,7 +13,6 @@ import org.junit.jupiter.api.function.ThrowingSupplier;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis.AxisEditor;
@@ -29,13 +29,14 @@ import io.fair_acc.chartfx.ui.utils.TestFx;
 public class EditAxisTests {
     private DefaultNumericAxis xAxis;
     private DefaultNumericAxis yAxis;
-    private XYChart chart;
+    private Chart chart;
 
     @Start
     public void start(Stage stage) {
         xAxis = new DefaultNumericAxis("x", -100, +100, 10);
         yAxis = new DefaultNumericAxis("x", -100, +100, 10);
-        chart = new XYChart(xAxis, yAxis);
+        chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
 
         Scene scene = new Scene(new Pane(), 100, 100);
         stage.setScene(scene);

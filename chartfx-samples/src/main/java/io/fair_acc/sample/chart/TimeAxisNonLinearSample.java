@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.spi.format.DefaultTimeFormatter;
 import javafx.application.Application;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -17,11 +19,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.AxisRange;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.axes.spi.format.DefaultTimeFormatter;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.XValueIndicator;
@@ -48,7 +48,8 @@ public class TimeAxisNonLinearSample extends ChartSample {
         xAxis1.setWeight(0.975);
         final var yAxis1 = new DefaultNumericAxis("y-axis", "a.u.");
 
-        final var chart = new XYChart(xAxis1, yAxis1);
+        final var chart = new Chart();
+        chart.getAxes().addAll(xAxis1, yAxis1);
         chart.legendVisibleProperty().set(true);
         chart.getPlugins().add(new Zoomer());
         chart.getPlugins().add(new EditAxis());
@@ -104,7 +105,7 @@ public class TimeAxisNonLinearSample extends ChartSample {
         root.setCenter(chart);
         ProcessingProfiler.getTimeDiff(startTime, "adding chart into StackPane");
 
-        final var diagChart = new XYChart();
+        final var diagChart = new Chart();
         diagChart.getPlugins().addAll(new Zoomer(), new EditAxis(), new DataPointTooltip());
         final var function = new DoubleDataSet("function");
         final var inverse = new DoubleDataSet("inverse");

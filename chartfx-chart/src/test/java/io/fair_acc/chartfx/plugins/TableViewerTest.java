@@ -10,11 +10,13 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Labeled;
 import javafx.scene.control.TableView;
+import javafx.scene.control.ToolBar;
 import javafx.scene.input.MouseButton;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.Stage;
@@ -31,7 +33,6 @@ import org.testfx.matcher.base.NodeMatchers;
 import org.testfx.util.NodeQueryUtils;
 import org.testfx.util.WaitForAsyncUtils;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.TableViewer.ColumnType;
 import io.fair_acc.chartfx.plugins.TableViewer.DataSetsRow;
 import io.fair_acc.dataset.DataSet;
@@ -45,13 +46,13 @@ import io.fair_acc.dataset.testdata.spi.CosineFunction;
 @ExtendWith(ApplicationExtension.class)
 class TableViewerTest {
     private final FxRobot fxRobot = new FxRobot();
-    private XYChart chart;
+    private Chart chart;
     private TableViewer tableViewer;
     private CosineFunction dataset;
 
     @Start
     public void start(Stage stage) {
-        chart = new XYChart();
+        chart = new Chart();
         chart.setId("myChart");
         Scene scene = new Scene(chart, 400, 300);
         tableViewer = new TableViewer();
@@ -162,7 +163,7 @@ class TableViewerTest {
         assertNotEquals(firstRowItem, new Object());
     }
 
-    private Button locateTableViewButton(final FlowPane toolbar) {
+    private Button locateTableViewButton(final ToolBar toolbar) {
         return fxRobot.from(toolbar) //
                 .lookup("." + BUTTON_BAR_STYLE_CLASS + " > ." + BUTTON_SWITCH_TABLE_VIEW_STYLE_CLASS) //
                 .queryButton();

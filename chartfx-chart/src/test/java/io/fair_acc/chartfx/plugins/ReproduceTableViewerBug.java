@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Scene;
@@ -16,7 +17,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.dataset.DataSetError;
 import io.fair_acc.dataset.testdata.spi.CosineFunction;
 import io.fair_acc.dataset.testdata.spi.SineFunction;
@@ -37,7 +37,7 @@ public class ReproduceTableViewerBug extends Application {
     private static final int N_SAMPLES = 400;
     private Timer timer;
 
-    private void generateData(final XYChart chart) {
+    private void generateData(final Chart chart) {
         long startTime = ProcessingProfiler.getTimeStamp();
         final List<DataSetError> dataSet = new ArrayList<>();
         dataSet.add(new SineFunction("dyn. sine function", N_SAMPLES, true));
@@ -48,7 +48,7 @@ public class ReproduceTableViewerBug extends Application {
         startTime = ProcessingProfiler.getTimeDiff(startTime, "adding data into DataSet");
     }
 
-    private HBox getHeaderBar(final XYChart chart) {
+    private HBox getHeaderBar(final Chart chart) {
         final Button newDataSet = new Button("new DataSet");
         newDataSet.setOnAction(evt -> Platform.runLater(getTimerTask(chart)));
 
@@ -69,7 +69,7 @@ public class ReproduceTableViewerBug extends Application {
         return new HBox(newDataSet, startTimer);
     }
 
-    public TimerTask getTimerTask(final XYChart chart) {
+    public TimerTask getTimerTask(final Chart chart) {
         return new TimerTask() {
             private int updateCount;
 
@@ -94,7 +94,7 @@ public class ReproduceTableViewerBug extends Application {
 
         final Scene scene = new Scene(root);
 
-        final XYChart chart = new XYChart();
+        final Chart chart = new Chart();
         chart.getXAxis().setName("x axis");
         chart.getYAxis().setName("y axis");
         chart.legendVisibleProperty().set(true);

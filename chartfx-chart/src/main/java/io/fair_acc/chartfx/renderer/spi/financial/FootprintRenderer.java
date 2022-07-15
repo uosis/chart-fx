@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -25,8 +27,6 @@ import com.sun.javafx.tk.FontLoader;
 import com.sun.javafx.tk.FontMetrics;
 import com.sun.javafx.tk.Toolkit;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -36,7 +36,6 @@ import io.fair_acc.chartfx.renderer.spi.financial.service.RendererPaintAfterEPAw
 import io.fair_acc.chartfx.renderer.spi.financial.service.footprint.FootprintRendererAttributes;
 import io.fair_acc.chartfx.renderer.spi.financial.service.footprint.NbColumnColorGroup;
 import io.fair_acc.chartfx.renderer.spi.financial.service.footprint.NbColumnColorGroup.FontColor;
-import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import io.fair_acc.chartfx.utils.StyleParser;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.financial.api.attrs.AttributeModelAware;
@@ -157,12 +156,11 @@ public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRender
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
-        if (!(chart instanceof XYChart)) {
+                                final ObservableList<DataSet> datasets) {
+        if (chart == null) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
-        final XYChart xyChart = (XYChart) chart;
 
         // make local copy and add renderer specific data sets
         final List<DataSet> localDataSetList = new ArrayList<>(datasets);
@@ -173,8 +171,8 @@ public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRender
             start = ProcessingProfiler.getTimeStamp();
         }
 
-        final Axis xAxis = xyChart.getXAxis();
-        final Axis yAxis = xyChart.getYAxis();
+        final Axis xAxis = chart.getXAxis();
+        final Axis yAxis = chart.getYAxis();
 
         final double xAxisWidth = xAxis.getWidth();
         final double xmin = xAxis.getValueForDisplay(0);
@@ -188,8 +186,8 @@ public class FootprintRenderer extends AbstractFinancialRenderer<FootprintRender
 
             ds.lock().readLockGuardOptimistic(() -> {
                 // update categories in case of category axes for the first (index == '0') indexed data set
-                if (lindex == 0 && xyChart.getXAxis() instanceof CategoryAxis) {
-                    final CategoryAxis axis = (CategoryAxis) xyChart.getXAxis();
+                if (lindex == 0 && chart.getXAxis() instanceof CategoryAxis) {
+                    final CategoryAxis axis = (CategoryAxis) chart.getXAxis();
                     axis.updateCategories(ds);
                 }
                 attrs = null;

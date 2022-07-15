@@ -5,6 +5,8 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.renderer.spi.utils.ColorGradient;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.ComboBox;
@@ -18,14 +20,12 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.ColormapSelector.ColormapComboBox;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.ContourType;
 import io.fair_acc.chartfx.renderer.spi.ContourDataSetRenderer;
-import io.fair_acc.chartfx.renderer.spi.utils.ColorGradient;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.DataSetBuilder;
@@ -76,8 +76,8 @@ public class ContourChartSample extends ChartSample {
         return new DataSetBuilder("demoDataSet").setValues(DataSet.DIM_X, x).setValues(DataSet.DIM_Y, y).setValues(DataSet.DIM_Z, z).build();
     }
 
-    private XYChart getChartPane(final Slider slider1, final Slider slider2, final Slider slider3,
-            final ContourType colorMap) {
+    private Chart getChartPane(final Slider slider1, final Slider slider2, final Slider slider3,
+                               final ContourType colorMap) {
         final DefaultNumericAxis xAxis = new DefaultNumericAxis();
         xAxis.setAnimated(false);
         xAxis.setAutoRangeRounding(false);
@@ -98,7 +98,8 @@ public class ContourChartSample extends ChartSample {
         zAxis.setSide(Side.RIGHT);
         zAxis.getProperties().put(Zoomer.ZOOMER_OMIT_AXIS, true);
 
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getAxes().add(zAxis);
         chart.setTitle("Test data");
         chart.setAnimated(false);
@@ -181,9 +182,9 @@ public class ContourChartSample extends ChartSample {
         final Slider nCountourLevelSlider = new Slider(0, 100, 20); // number of contour levels
         final Slider nSegmentSlider = new Slider(0, 10_000, 500); // number of contour segments
         final Slider minHexSizeSlider = new Slider(1, 100, 5); // number of contour segments
-        final XYChart chartPane1 = getChartPane(nCountourLevelSlider, nSegmentSlider, minHexSizeSlider,
+        final Chart chartPane1 = getChartPane(nCountourLevelSlider, nSegmentSlider, minHexSizeSlider,
                 ContourType.CONTOUR);
-        final XYChart chartPane2 = getChartPane(nCountourLevelSlider, nSegmentSlider, minHexSizeSlider,
+        final Chart chartPane2 = getChartPane(nCountourLevelSlider, nSegmentSlider, minHexSizeSlider,
                 ContourType.HEATMAP);
         final HBox hBox = new HBox(chartPane1, chartPane2);
         VBox.setVgrow(hBox, Priority.ALWAYS);
@@ -248,7 +249,7 @@ public class ContourChartSample extends ChartSample {
         return vBox;
     }
 
-    private static void bindAxis(final XYChart chartPane1, final XYChart chartPane2) {
+    private static void bindAxis(final Chart chartPane1, final Chart chartPane2) {
         final DefaultNumericAxis xAxis1 = (DefaultNumericAxis) chartPane1.getXAxis();
         final DefaultNumericAxis yAxis1 = (DefaultNumericAxis) chartPane1.getYAxis();
         final DefaultNumericAxis xAxis2 = (DefaultNumericAxis) chartPane2.getXAxis();

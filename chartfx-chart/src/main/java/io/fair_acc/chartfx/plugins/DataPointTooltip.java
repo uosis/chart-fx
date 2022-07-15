@@ -9,8 +9,11 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.DoubleProperty;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -18,8 +21,6 @@ import javafx.geometry.Point2D;
 import javafx.scene.control.Label;
 import javafx.scene.input.MouseEvent;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -40,7 +41,7 @@ import io.fair_acc.dataset.spi.utils.Tuple;
  *
  * @author Grzegorz Kruk
  */
-public class DataPointTooltip extends AbstractDataFormattingPlugin {
+public class DataPointTooltip extends ChartPlugin {
     /**
      * Name of the CSS class of the tool tip label.
      */
@@ -66,7 +67,7 @@ public class DataPointTooltip extends AbstractDataFormattingPlugin {
         }
     };
 
-    private final EventHandler<MouseEvent> mouseMoveHandler = this::updateToolTip;
+    private final ObjectProperty<DataPointFormatter> formatter = new SimpleObjectProperty<>(this, "Default Datapoint formatter", new DataPointFormatter());
 
     /**
      * Creates a new instance of DataPointTooltip class with {{@link #pickingDistanceProperty() picking distance}
@@ -77,6 +78,7 @@ public class DataPointTooltip extends AbstractDataFormattingPlugin {
         label.setWrapText(true);
         label.setMinWidth(0);
         label.setManaged(false);
+        EventHandler<MouseEvent> mouseMoveHandler = this::updateToolTip;
         registerInputEventHandler(MouseEvent.MOUSE_MOVED, mouseMoveHandler);
     }
 
@@ -102,13 +104,12 @@ public class DataPointTooltip extends AbstractDataFormattingPlugin {
 
     protected Optional<DataPoint> findNearestDataPointWithinPickingDistance(final Point2D mouseLocation) {
         final Chart chart = getChart();
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             return Optional.empty();
         }
 
-        final XYChart xyChart = (XYChart) chart;
-        final ObservableList<DataSet> xyChartDatasets = xyChart.getDatasets();
-        return xyChart.getRenderers().stream() // for all renderers
+        final ObservableList<DataSet> xyChartDatasets = chart.getDatasets();
+        return chart.getRenderers().stream() // for all renderers
                 .flatMap(renderer -> Stream.of(renderer.getDatasets(), xyChartDatasets) //
                                              .flatMap(List::stream) // combine global and renderer specific Datasets
                                              .flatMap(dataset -> getPointsCloseToCursor(dataset, renderer, mouseLocation))) // get points in range of cursor
@@ -180,7 +181,7 @@ public class DataPointTooltip extends AbstractDataFormattingPlugin {
     }
 
     protected String formatDataPoint(final DataPoint dataPoint) {
-        return formatData(dataPoint.renderer, new Tuple<>(dataPoint.x, dataPoint.y));
+        return formatter.get().formatData(dataPoint.renderer, new Tuple<>(dataPoint.x, dataPoint.y));
     }
 
     protected String formatLabel(DataPoint dataPoint) {
@@ -309,5 +310,9 @@ public class DataPointTooltip extends AbstractDataFormattingPlugin {
         public DataPoint withFormattedLabel(String formattedLabel) {
             return new DataPoint(renderer, x, y, formattedLabel, distanceFromMouse, formattedLabel);
         }
+    }
+
+    public ObjectProperty<DataPointFormatter> formatterProperty() {
+        return formatter;
     }
 }

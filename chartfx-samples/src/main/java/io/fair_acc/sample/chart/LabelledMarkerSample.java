@@ -1,10 +1,10 @@
 package io.fair_acc.sample.chart;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.spi.LabelledMarkerRenderer;
@@ -20,7 +20,8 @@ public class LabelledMarkerSample extends ChartSample {
 
     @Override
     public Node getChartPanel(final Stage primaryStage) {
-        final XYChart chart = new XYChart(new DefaultNumericAxis(), new DefaultNumericAxis());
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis(), new DefaultNumericAxis());
         chart.getRenderers().set(0, new LabelledMarkerRenderer());
         chart.legendVisibleProperty().set(true);
 

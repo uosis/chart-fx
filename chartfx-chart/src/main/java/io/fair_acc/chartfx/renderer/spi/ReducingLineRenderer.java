@@ -11,12 +11,11 @@ import java.security.InvalidParameterException;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -59,19 +58,18 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
-        if (!(chart instanceof XYChart)) {
+                                final ObservableList<DataSet> datasets) {
+        if (chart == null) {
             throw new InvalidParameterException("must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
-        final XYChart xyChart = (XYChart) chart;
 
         // make local copy and add renderer specific data sets
         final List<DataSet> localDataSetList = new ArrayList<>(datasets);
         localDataSetList.addAll(super.getDatasets());
 
         final long start = ProcessingProfiler.getTimeStamp();
-        final Axis xAxis = xyChart.getXAxis();
-        final Axis yAxis = xyChart.getYAxis();
+        final Axis xAxis = chart.getXAxis();
+        final Axis yAxis = chart.getYAxis();
 
         final double xAxisWidth = xAxis.getWidth();
         final double xmin = xAxis.getValueForDisplay(0);
@@ -86,13 +84,13 @@ public class ReducingLineRenderer extends AbstractDataSetManagement<ReducingLine
                 // update categories in case of category axes for the first
                 // (index == '0') indexed data set
                 if (lindex == 0) {
-                    if (xyChart.getXAxis() instanceof CategoryAxis) {
-                        final CategoryAxis axis = (CategoryAxis) xyChart.getXAxis();
+                    if (chart.getXAxis() instanceof CategoryAxis) {
+                        final CategoryAxis axis = (CategoryAxis) chart.getXAxis();
                         axis.updateCategories(ds);
                     }
 
-                    if (xyChart.getYAxis() instanceof CategoryAxis) {
-                        final CategoryAxis axis = (CategoryAxis) xyChart.getYAxis();
+                    if (chart.getYAxis() instanceof CategoryAxis) {
+                        final CategoryAxis axis = (CategoryAxis) chart.getYAxis();
                         axis.updateCategories(ds);
                     }
                 }

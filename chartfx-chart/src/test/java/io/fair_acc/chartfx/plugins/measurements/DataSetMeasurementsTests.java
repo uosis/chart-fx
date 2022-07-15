@@ -10,6 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Optional;
 import java.util.concurrent.ExecutionException;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.scene.Scene;
 import javafx.scene.control.ButtonType;
 import javafx.scene.layout.VBox;
@@ -19,12 +22,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
 import io.fair_acc.chartfx.plugins.measurements.DataSetMeasurements.MeasurementCategory;
 import io.fair_acc.chartfx.plugins.measurements.DataSetMeasurements.MeasurementType;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.dataset.testdata.spi.SineFunction;
 
 /**
@@ -41,7 +41,7 @@ public class DataSetMeasurementsTests {
 
     @Start
     public void start(Stage stage) {
-        final XYChart chart = new XYChart();
+        final Chart chart = new Chart();
         chart.getDatasets().add(new SineFunction("sine1", 1000));
         chart.getDatasets().add(new SineFunction("sine2", 1000));
 

@@ -2,6 +2,7 @@ package io.fair_acc.sample.chart;
 
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.CrosshairIndicator;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
@@ -45,7 +45,8 @@ public class CssStylingSample extends ChartSample {
         yAxis.setAutoRanging(true); // default: true
         yAxis.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
 
-        final XYChart chart = new XYChart(new DefaultNumericAxis(), yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis(), yAxis);
         chart.getPlugins().addAll(new Zoomer(), new CrosshairIndicator(), new EditAxis()); // standard plugin, useful for most cases
 
         chart.getDatasets().addAll(new GaussFunction("Gauss", N_SAMPLES), new CosineFunction("Cosine", N_SAMPLES)); // for two data sets
@@ -57,7 +58,8 @@ public class CssStylingSample extends ChartSample {
         yAxisRight.setAutoRanging(true); // default: true
         yAxisRight.setAutoRangePadding(0.5); // here: 50% padding on top and bottom of axis
 
-        final XYChart chartRight = new XYChart(new DefaultNumericAxis(), yAxisRight);
+        final Chart chartRight = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis(), yAxisRight);
         chartRight.getPlugins().addAll(new Zoomer(), new DataPointTooltip(), new EditAxis()); // standard plugin, useful for most cases
 
         chartRight.getDatasets().addAll(new RandomWalkFunction("RandomWalk", N_SAMPLES));

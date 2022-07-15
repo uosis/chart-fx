@@ -10,14 +10,13 @@ import java.util.List;
 import java.util.WeakHashMap;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.GraphicsContext;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -72,14 +71,13 @@ public class MountainRangeRenderer extends ErrorDataSetRenderer implements Rende
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
-        if (!(chart instanceof XYChart)) {
+                                final ObservableList<DataSet> datasets) {
+        if (chart == null) {
             throw new InvalidParameterException("must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
         final long start = ProcessingProfiler.getTimeStamp(); // NOPMD - time keeping needs to be defined here
-        final XYChart xyChart = (XYChart) chart;
 
-        final Axis yAxis = xyChart.getYAxis();
+        final Axis yAxis = chart.getYAxis();
 
         // make local copy and add renderer specific data sets
         final List<DataSet> localDataSetList = new ArrayList<>(datasets);

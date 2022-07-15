@@ -7,6 +7,7 @@ import static io.fair_acc.dataset.DataSet.DIM_Z;
 import java.util.Arrays;
 import java.util.stream.Collectors;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -25,7 +26,6 @@ import org.kordamp.ikonli.javafx.FontIcon;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.UpdateAxisLabels;
 import io.fair_acc.chartfx.plugins.Zoomer;
@@ -52,7 +52,7 @@ public class TransposedDataSetSample extends ChartSample {
     @Override
     public Node getChartPanel(final Stage primaryStage) {
         // init default 2D Chart
-        final XYChart chart1 = getDefaultChart();
+        final Chart chart1 = getDefaultChart();
         final ErrorDataSetRenderer renderer = (ErrorDataSetRenderer) chart1.getRenderers().get(0);
         renderer.setAssumeSortedData(false); // necessary to suppress sorted-DataSet-only optimisations
 
@@ -63,7 +63,7 @@ public class TransposedDataSetSample extends ChartSample {
         renderer.getDatasets().add(transposedDataSet1);
 
         // init default 3D Chart with HeatMapRenderer
-        final XYChart chart2 = getDefaultChart();
+        final Chart chart2 = getDefaultChart();
         final ContourDataSetRenderer contourRenderer = new ContourDataSetRenderer();
         chart2.getRenderers().setAll(contourRenderer);
 
@@ -152,8 +152,8 @@ public class TransposedDataSetSample extends ChartSample {
         return new DataSetBuilder("3D test data").setValues(DIM_X, x).setValues(DIM_Y, y).setValues(DIM_Z, z).build();
     }
 
-    private static XYChart getDefaultChart() {
-        final XYChart chart = new XYChart();
+    private static Chart getDefaultChart() {
+        final Chart chart = new Chart();
         chart.getPlugins().add(new Zoomer());
         chart.getPlugins().add(new EditAxis());
         chart.getPlugins().add(new UpdateAxisLabels());

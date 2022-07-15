@@ -55,7 +55,7 @@ public final class ChartLayoutAnimator extends AnimationTimer implements EventHa
      * Play a animation containing the given keyframes.
      *
      * @param animation The animation to play
-     * @return A id reference to the animation that can be used to stop the animation if needed
+     * @return An id reference to the animation that can be used to stop the animation if needed
      */
     public Object animate(Animation animation) {
         SequentialTransition t = new SequentialTransition();
@@ -72,10 +72,10 @@ public final class ChartLayoutAnimator extends AnimationTimer implements EventHa
     }
 
     /**
-     * Play a animation containing the given keyframes.
+     * Play an animation containing the given keyframes.
      *
      * @param keyFrames The keyframes to animate
-     * @return A id reference to the animation that can be used to stop the animation if needed
+     * @return An id reference to the animation that can be used to stop the animation if needed
      */
     public Object animate(KeyFrame... keyFrames) {
         Timeline t = new Timeline();

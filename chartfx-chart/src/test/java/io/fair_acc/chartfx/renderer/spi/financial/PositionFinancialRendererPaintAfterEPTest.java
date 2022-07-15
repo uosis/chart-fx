@@ -4,7 +4,13 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.*;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConfig;
+import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.stage.Stage;
 
 import org.junit.jupiter.api.Assertions;
@@ -15,18 +21,13 @@ import org.slf4j.LoggerFactory;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConfig;
-import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.CalendarUtils;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.FinancialTestUtils;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.Interval;
 import io.fair_acc.chartfx.renderer.spi.financial.utils.PositionFinancialDataSetDummy;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.AbstractDataSet;
 import io.fair_acc.dataset.spi.financial.OhlcvDataSet;
@@ -36,7 +37,7 @@ import io.fair_acc.dataset.utils.ProcessingProfiler;
 @ExtendWith(JavaFXInterceptorUtils.SelectiveJavaFxInterceptor.class)
 class PositionFinancialRendererPaintAfterEPTest {
     private static final Logger LOGGER = LoggerFactory.getLogger(PositionFinancialRendererPaintAfterEPTest.class);
-    private XYChart chart;
+    private Chart chart;
     private OhlcvDataSet ohlcvDataSet;
 
     @Start
@@ -58,7 +59,8 @@ class PositionFinancialRendererPaintAfterEPTest {
         yAxis.setAutoRanging(false);
 
         // prepare chart structure
-        chart = new XYChart(xAxis, yAxis);
+        chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getGridRenderer().setDrawOnTop(false);
 
         // define test positions (no conversion from domain objects)
@@ -101,7 +103,7 @@ class PositionFinancialRendererPaintAfterEPTest {
         xAxis.setOverlapPolicy(AxisLabelOverlapPolicy.SKIP_ALT);
         ohlcvDataSet.setCategoryBased(true);
         chart.getAxes().add(0, xAxis);
-        chart.layoutChildren();
+        // chart.layoutChildren();
     }
 
     @Test

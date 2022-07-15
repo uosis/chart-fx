@@ -39,7 +39,7 @@ import io.fair_acc.dataset.spi.DataRange;
  */
 public class OscilloscopeAxis extends AbstractAxis implements Axis {
     private static final Logger LOGGER = LoggerFactory.getLogger(OscilloscopeAxis.class);
-    private static final CssPropertyFactory<OscilloscopeAxis> CSS = new CssPropertyFactory<>(AbstractAxisParameter.getClassCssMetaData());
+    private static final CssPropertyFactory<OscilloscopeAxis> CSS = new CssPropertyFactory<>(AbstractAxis.getClassCssMetaData());
     private static final int DEFAULT_RANGE_LENGTH = 1; // default min min length
     private static final int TICK_COUNT = 10; // by convention
     public static final SortedSet<Number> DEFAULT_MULTIPLIERS1 = Collections.unmodifiableSortedSet(new TreeSet<>(Arrays.asList(1.0, 2.0, 5.0)));
@@ -82,7 +82,7 @@ public class OscilloscopeAxis extends AbstractAxis implements Axis {
             setAutoRanging(true);
         }
         setTickUnit(tickUnit);
-        setMinorTickCount(AbstractAxisParameter.DEFAULT_MINOR_TICK_COUNT);
+        setMinorTickCount(AbstractAxis.DEFAULT_MINOR_TICK_COUNT);
 
         isUpdating = false;
     }

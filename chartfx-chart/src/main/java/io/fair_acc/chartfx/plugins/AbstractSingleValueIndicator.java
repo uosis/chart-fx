@@ -105,9 +105,8 @@ public abstract class AbstractSingleValueIndicator extends AbstractValueIndicato
         });
 
         // Need to add them so that at initialization of the stage the CCS is
-        // applied and we can calculate label's
-        // width and height
-        getChartChildren().addAll(line, label);
+        // applied and we can calculate label's width and height
+        getChartChildren().addAll(line, label, pickLine, triangle);
         this.value.addListener(
                 (ch, o, n) -> invokeListener(new UpdateEvent(this, "value changed to " + n + " for axis " + axis)));
     }
@@ -168,7 +167,7 @@ public abstract class AbstractSingleValueIndicator extends AbstractValueIndicato
     }
 
     private void initTriangle() {
-        triangle.visibleProperty().bind(editableIndicatorProperty());
+        //triangle.visibleProperty().bind(editableIndicatorProperty());
         triangle.mouseTransparentProperty().bind(editableIndicatorProperty().not());
         triangle.setPickOnBounds(true);
         triangle.setManaged(false); // prevent the triangle from relayouting the whole chart
@@ -224,9 +223,6 @@ public abstract class AbstractSingleValueIndicator extends AbstractValueIndicato
         pickLine.setStartY(startY);
         pickLine.setEndX(endX);
         pickLine.setEndY(endY);
-
-        addChildNodeIfNotPresent(pickLine);
-        addChildNodeIfNotPresent(line);
     }
 
     /**
@@ -245,12 +241,6 @@ public abstract class AbstractSingleValueIndicator extends AbstractValueIndicato
         triangle.setTranslateX(startX);
         triangle.setTranslateY(startY);
         triangle.toFront();
-        // triangle has to be put onto the plot foreground to be able to put it on top of axes
-        // is removed when the chart is changed
-        // addChildNodeIfNotPresent(triangle);
-        if (!getChart().getPlotForeground().getChildren().contains(triangle)) {
-            getChart().getPlotForeground().getChildren().add(triangle);
-        }
     }
 
     /**
@@ -329,5 +319,18 @@ public abstract class AbstractSingleValueIndicator extends AbstractValueIndicato
     @Override
     public final DoubleProperty valueProperty() {
         return value;
+    }
+
+    protected void hideElements() {
+        triangle.setVisible(false);
+        label.setVisible(false);
+        pickLine.setVisible(false);
+        line.setVisible(false);
+    }
+    protected void showElements() {
+        triangle.setVisible(true);
+        label.setVisible(true);
+        pickLine.setVisible(true);
+        line.setVisible(true);
     }
 }

@@ -9,6 +9,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import java.util.Collections;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -26,8 +27,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -54,13 +53,13 @@ public class LegendTests {
     private final Renderer testRenderer = new TestRenderer();
     private final DataSet testDataSet = new SineFunction("sine", 100);
     private final DataSet testDataSetAlt = new SineFunction("sineAlt", 100);
-    private XYChart chart;
+    private Chart chart;
 
     @Start
     public void start(Stage stage) {
         assertDoesNotThrow(DefaultLegend::new);
 
-        chart = new XYChart(new DefaultNumericAxis(), new DefaultNumericAxis());
+        chart = new Chart();
         chart.getRenderers().setAll(testRenderer);
         testRenderer.getDatasets().add(testDataSet);
         assertEquals(testDataSet, testRenderer.getDatasets().get(0));

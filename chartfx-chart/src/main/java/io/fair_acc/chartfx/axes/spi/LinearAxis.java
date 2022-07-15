@@ -20,7 +20,7 @@ import io.fair_acc.chartfx.ui.css.CssPropertyFactory;
  * @author rstein
  */
 public class LinearAxis extends AbstractAxis {
-    private static final CssPropertyFactory<LinearAxis> CSS = new CssPropertyFactory<>(AbstractAxisParameter.getClassCssMetaData());
+    private static final CssPropertyFactory<LinearAxis> CSS = new CssPropertyFactory<>(AbstractAxis.getClassCssMetaData());
     private static final int DEFAULT_TICK_COUNT = 9;
 
     private static final int TICK_MARK_GAP = 6;

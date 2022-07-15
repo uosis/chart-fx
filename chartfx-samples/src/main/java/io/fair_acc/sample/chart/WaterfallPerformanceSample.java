@@ -27,7 +27,6 @@ import javafx.stage.WindowEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.ColormapSelector.ColormapComboBox;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -91,7 +90,7 @@ public class WaterfallPerformanceSample extends ChartSample {
         Platform.exit();
     }
 
-    private XYChart getChartPane(final ContourType colorMap) {
+    private Chart getChartPane(final ContourType colorMap) {
         final DefaultNumericAxis xAxis = new DefaultNumericAxis();
         xAxis.setAnimated(false);
         xAxis.setAutoRangeRounding(false);
@@ -112,7 +111,8 @@ public class WaterfallPerformanceSample extends ChartSample {
         zAxis.setSide(Side.RIGHT);
         zAxis.getProperties().put(Zoomer.ZOOMER_OMIT_AXIS, true);
 
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getAxes().add(zAxis);
         chart.setTitle("press 'timer', feel free to whistle and play with the contour and data reduction parameters");
         chart.setAnimated(false);
@@ -136,7 +136,7 @@ public class WaterfallPerformanceSample extends ChartSample {
         return chart;
     }
 
-    private ToolBar getContourToolBar(final XYChart chart, final ContourDataSetRenderer renderer) {
+    private ToolBar getContourToolBar(final Chart chart, final ContourDataSetRenderer renderer) {
         ToolBar contourToolBar = new ToolBar();
 
         contourType.getItems().addAll(ContourType.values());
@@ -320,7 +320,7 @@ public class WaterfallPerformanceSample extends ChartSample {
 
         ToolBar testVariableToolBar = getTestToolBar();
 
-        final XYChart chart = getChartPane(ContourType.HEATMAP);
+        final Chart chart = getChartPane(ContourType.HEATMAP);
         VBox.setVgrow(chart, Priority.SOMETIMES);
 
         ToolBar dataSetToolBar = getDataSetToolBar(chart);

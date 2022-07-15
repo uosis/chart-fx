@@ -50,7 +50,7 @@ public class YRangeIndicator extends AbstractRangeValueIndicator {
             return;
         }
 
-        final Bounds plotAreaBounds = getChart().getCanvas().getBoundsInLocal();
+        final Bounds plotAreaBounds = getChart().getPlotForeground().sceneToLocal(getChart().getPlotArea().localToScene(getChart().getPlotArea().getBoundsInLocal()));
         final double minX = plotAreaBounds.getMinX();
         final double maxX = plotAreaBounds.getMaxX();
         final double minY = plotAreaBounds.getMinY();

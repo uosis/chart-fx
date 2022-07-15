@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.Arrays;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.geometry.HPos;
 import javafx.geometry.Orientation;
@@ -19,7 +20,6 @@ import org.jtransforms.fft.DoubleFFT_1D;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -47,7 +47,7 @@ public class DimReductionDataSetSample extends ChartSample {
     @Override
     public Node getChartPanel(final Stage primaryStage) {
         waveletScalogram = createDataSet();
-        final XYChart waveletChart1 = getChart(true);
+        final Chart waveletChart1 = getChart(true);
         waveletChart1.getDatasets().add(waveletScalogram);
 
         // reduce wavelet data set to 2D by using slices
@@ -73,7 +73,7 @@ public class DimReductionDataSetSample extends ChartSample {
         xRangeIndicator.setUpperBound(600.0);
         waveletChart1.getPlugins().addAll(xRangeIndicator, xRangeIndicatorMin, xRangeIndicatorMax);
 
-        final XYChart waveletChart2 = getChart(true);
+        final Chart waveletChart2 = getChart(true);
         waveletChart2.getDatasets().add(waveletScalogram);
 
         // reduce wavelet data set to 2D by using slices
@@ -100,7 +100,7 @@ public class DimReductionDataSetSample extends ChartSample {
         yRangeIndicator.setUpperBound(0.225);
         waveletChart2.getPlugins().addAll(yRangeIndicator, yRangeIndicatorMin, yRangeIndicatorMax);
 
-        final XYChart horizontalChart = getChart(false);
+        final Chart horizontalChart = getChart(false);
         horizontalChart.getFirstAxis(Orientation.HORIZONTAL).setName("frequency");
         horizontalChart.getFirstAxis(Orientation.HORIZONTAL).setUnit("fs");
         horizontalChart.getFirstAxis(Orientation.VERTICAL).setName("magnitude");
@@ -110,7 +110,7 @@ public class DimReductionDataSetSample extends ChartSample {
         sync1.add(waveletChart1.getYAxis());
         sync1.add(horizontalChart.getXAxis());
 
-        final XYChart verticalChart = getChart(false);
+        final Chart verticalChart = getChart(false);
         verticalChart.getFirstAxis(Orientation.VERTICAL).setName("magnitude");
         verticalChart.getDatasets().addAll(verticalSlice, verticalRange);
 
@@ -175,10 +175,11 @@ public class DimReductionDataSetSample extends ChartSample {
         return tempDataSet;
     }
 
-    private static XYChart getChart(final boolean isWavelet) {
+    private static Chart getChart(final boolean isWavelet) {
         DefaultNumericAxis xAxis = new DefaultNumericAxis("time", "turns");
         DefaultNumericAxis yAxis = new DefaultNumericAxis("frequency", "fs");
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getXAxis().setName("time");
         chart.getXAxis().setUnit("turns");
         chart.getYAxis().setName("frequency");

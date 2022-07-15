@@ -7,11 +7,11 @@ import java.time.ZoneId;
 import java.util.Calendar;
 import java.util.Date;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Platform;
 import javafx.collections.ListChangeListener;
 import javafx.scene.control.Label;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.dataset.spi.DefaultErrorDataSet;
 import io.fair_acc.dataset.spi.financial.api.ohlcv.IOhlcv;
@@ -98,7 +98,7 @@ public class FinancialTestUtils {
         final double now = System.currentTimeMillis() / 1000.0 + 1; // N.B. '+1'
         for (int n = 0; n < N_SAMPLES; n++) {
             double t = now + n * 10;
-            t *= +1;
+            t *= 1;
             final double y = 100 * Math.cos(Math.PI * t * 0.0005) + 0 * 0.001 * (t - now) + 0 * 1e4;
             final double ex = 0.1;
             final double ey = 10;

@@ -19,21 +19,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.chartfx.renderer.spi.financial.service.OhlcvRendererEpData;
 import io.fair_acc.chartfx.renderer.spi.financial.service.RendererPaintAfterEP;
 import io.fair_acc.chartfx.renderer.spi.financial.service.RendererPaintAfterEPAware;
-import io.fair_acc.chartfx.renderer.spi.utils.DefaultRenderColorScheme;
 import io.fair_acc.chartfx.utils.StyleParser;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.financial.OhlcvDataSet;
@@ -111,12 +110,11 @@ public class HighLowRenderer extends AbstractFinancialRenderer<HighLowRenderer> 
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
-        if (!(chart instanceof XYChart)) {
+                                final ObservableList<DataSet> datasets) {
+        if (chart == null) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
-        final XYChart xyChart = (XYChart) chart;
 
         // make local copy and add renderer specific data sets
         final List<DataSet> localDataSetList = new ArrayList<>(datasets);
@@ -127,8 +125,8 @@ public class HighLowRenderer extends AbstractFinancialRenderer<HighLowRenderer> 
             start = ProcessingProfiler.getTimeStamp();
         }
 
-        final Axis xAxis = xyChart.getXAxis();
-        final Axis yAxis = xyChart.getYAxis();
+        final Axis xAxis = chart.getXAxis();
+        final Axis yAxis = chart.getYAxis();
 
         final double xAxisWidth = xAxis.getWidth();
         final double xmin = xAxis.getValueForDisplay(0);
@@ -142,8 +140,8 @@ public class HighLowRenderer extends AbstractFinancialRenderer<HighLowRenderer> 
 
             ds.lock().readLockGuardOptimistic(() -> {
                 // update categories in case of category axes for the first (index == '0') indexed data set
-                if (lindex == 0 && xyChart.getXAxis() instanceof CategoryAxis) {
-                    final CategoryAxis axis = (CategoryAxis) xyChart.getXAxis();
+                if (lindex == 0 && chart.getXAxis() instanceof CategoryAxis) {
+                    final CategoryAxis axis = (CategoryAxis) chart.getXAxis();
                     axis.updateCategories(ds);
                 }
                 AttributeModelAware attrs = null;

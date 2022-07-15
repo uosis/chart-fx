@@ -4,7 +4,7 @@ import static io.fair_acc.sample.financial.service.period.IntradayPeriod.Intrada
 
 import java.util.HashMap;
 
-import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.renderer.spi.financial.FootprintRenderer;
 import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConstants;
 import io.fair_acc.chartfx.renderer.spi.financial.service.footprint.FootprintRendererAttributes;
@@ -42,7 +42,7 @@ public class FinancialRealtimeFootprintSample extends FinancialRealtimeCandlesti
         period = new IntradayPeriod(M, 2.0, 0.0, true, "footprintCalcAddons");
     }
 
-    protected void prepareRenderers(XYChart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
+    protected void prepareRenderers(Chart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
         // configure footprint attributes (create defaults, and modify it by .setAttribute() methods
         FootprintRendererAttributes footprintAttrs = FootprintRendererAttributes.getDefaultValues(theme);
 

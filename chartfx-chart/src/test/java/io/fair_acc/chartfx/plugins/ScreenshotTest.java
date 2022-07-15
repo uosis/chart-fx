@@ -10,7 +10,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Scene;
+import javafx.scene.control.ToolBar;
 import javafx.scene.image.Image;
 import javafx.scene.input.Clipboard;
 import javafx.scene.input.DataFormat;
@@ -26,7 +28,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.testdata.spi.CosineFunction;
@@ -39,12 +40,12 @@ import io.fair_acc.dataset.testdata.spi.CosineFunction;
 @ExtendWith(ApplicationExtension.class)
 class ScreenshotTest {
     private final FxRobot fxRobot = new FxRobot();
-    private XYChart chart;
+    private Chart chart;
     private Screenshot screenshotPlugin;
 
     @Start
     public void start(Stage stage) {
-        chart = new XYChart();
+        chart = new Chart();
         chart.setId("myChart");
         Scene scene = new Scene(chart, 400, 300);
         screenshotPlugin = new Screenshot();
@@ -58,7 +59,7 @@ class ScreenshotTest {
     @Test
     public void screenshotTests(@TempDir Path tmpdir) throws IOException {
         // setup some useful variables
-        final FlowPane toolbar = chart.getToolBar();
+        final ToolBar toolbar = chart.getToolBar();
 
         // add Screenshot Plugin
         fxRobot.interact(() -> {
@@ -77,7 +78,7 @@ class ScreenshotTest {
         });
 
         // verify that controls were added to toolbar
-        FxAssert.verifyThat(toolbar, node -> node.getChildren().size() == 1);
+        FxAssert.verifyThat(toolbar, node -> node.getItems().size() == 1);
 
         // check dimensions of screenshot match chart dimensions
         fxRobot.interact(() -> {
@@ -116,7 +117,7 @@ class ScreenshotTest {
         fxRobot.interact(() -> chart.getPlugins().remove(screenshotPlugin));
 
         // verify that controls were removed from toolbar
-        FxAssert.verifyThat(toolbar, node -> node.getChildren().size() == 0);
+        FxAssert.verifyThat(toolbar, node -> node.getItems().size() == 0);
     }
 
     @Test

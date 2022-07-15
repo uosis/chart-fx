@@ -7,8 +7,12 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.concurrent.ExecutionException;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.geometry.Orientation;
 import javafx.scene.Scene;
+import javafx.scene.chart.XYChart;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
@@ -16,12 +20,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
 import io.fair_acc.chartfx.plugins.XValueIndicator;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.dataset.testdata.spi.SineFunction;
 
 /**
@@ -33,7 +34,7 @@ import io.fair_acc.dataset.testdata.spi.SineFunction;
 @ExtendWith(ApplicationExtension.class)
 @ExtendWith(JavaFXInterceptorUtils.SelectiveJavaFxInterceptor.class)
 public class ValueIndicatorSelectorTests {
-    private XYChart chart;
+    private Chart chart;
     private ParameterMeasurements plugin;
     private ValueIndicatorSelector field;
     private ValueIndicatorSelector field2;
@@ -41,7 +42,7 @@ public class ValueIndicatorSelectorTests {
 
     @Start
     public void start(Stage stage) {
-        chart = new XYChart();
+        chart = new Chart();
         plugin = new ParameterMeasurements();
 
         assertThrows(IllegalArgumentException.class, () -> new ValueIndicatorSelector(null, AxisMode.X, 0));

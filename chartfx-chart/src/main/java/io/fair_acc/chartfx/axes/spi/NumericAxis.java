@@ -28,7 +28,7 @@ import io.fair_acc.chartfx.ui.css.CssPropertyFactory;
  * </ul>
  */
 public final class NumericAxis extends AbstractAxis {
-    private static final CssPropertyFactory<NumericAxis> CSS = new CssPropertyFactory<>(AbstractAxisParameter.getClassCssMetaData());
+    private static final CssPropertyFactory<NumericAxis> CSS = new CssPropertyFactory<>(AbstractAxis.getClassCssMetaData());
     private static final int TICK_MARK_GAP = 6;
     private static final double NEXT_TICK_UNIT_FACTOR = 1.01;
     private static final int MAX_TICK_COUNT = 20;

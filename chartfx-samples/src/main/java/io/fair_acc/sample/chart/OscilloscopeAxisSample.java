@@ -3,6 +3,8 @@ package io.fair_acc.sample.chart;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.axes.spi.format.DefaultTickUnitSupplier;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -24,12 +26,10 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.AbstractAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.axes.spi.OscilloscopeAxis;
-import io.fair_acc.chartfx.axes.spi.format.DefaultTickUnitSupplier;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.renderer.datareduction.DefaultDataReducer;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
@@ -53,8 +53,8 @@ public class OscilloscopeAxisSample extends ChartSample {
     private static final double AXIS_CENTRE_POSITION = 0.2;
     public final LimitedIndexedTreeDataSet rollingBufferDipoleCurrent = new LimitedIndexedTreeDataSet("dipole current", RollingBufferSample.BUFFER_CAPACITY);
     public final LimitedIndexedTreeDataSet rollingBufferBeamIntensity = new LimitedIndexedTreeDataSet("beam intensity", RollingBufferSample.BUFFER_CAPACITY);
-    public final XYChart chartOscilloscopeAxis = getChart(false);
-    public final XYChart chartDefaultAxis = getChart(true);
+    public final Chart chartOscilloscopeAxis = getChart(false);
+    public final Chart chartDefaultAxis = getChart(true);
     private Timer timer;
 
     private void generateData() {
@@ -241,7 +241,7 @@ public class OscilloscopeAxisSample extends ChartSample {
         };
     }
 
-    private XYChart getChart(final boolean defaultAxis) {
+    private Chart getChart(final boolean defaultAxis) {
         final DefaultNumericAxis xAxis = new DefaultNumericAxis("", "");
         xAxis.setAutoRangeRounding(false);
         xAxis.invertAxis(false);
@@ -267,7 +267,8 @@ public class OscilloscopeAxisSample extends ChartSample {
         yAxis1.setAutoRangeRounding(true);
         yAxis2.setAutoRangeRounding(true);
 
-        final XYChart chart = new XYChart(xAxis, yAxis1);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis1);
         chart.setTitle(defaultAxis ? "Chart with DefaultNumericAxis" : "Chart with OscilloscopeAxis");
         chart.legendVisibleProperty().set(false);
         chart.getYAxis().setName(rollingBufferBeamIntensity.getName());

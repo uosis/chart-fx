@@ -3,6 +3,7 @@ package io.fair_acc.sample.chart;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -15,7 +16,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
@@ -96,7 +96,7 @@ public class ErrorDataSetRendererSample extends ChartSample {
         ProcessingProfiler.setDebugState(false);
 
         final BorderPane root = new BorderPane();
-        final XYChart chart = new XYChart();
+        final Chart chart = new Chart();
         chart.getAxes().addAll(new DefaultNumericAxis(), new DefaultNumericAxis());
         chart.legendVisibleProperty().set(true);
         chart.getXAxis().setName("time");

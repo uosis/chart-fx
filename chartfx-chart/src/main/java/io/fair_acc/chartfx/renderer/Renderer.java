@@ -2,12 +2,12 @@ package io.fair_acc.chartfx.renderer;
 
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.dataset.DataSet;
 

@@ -46,10 +46,10 @@ class MemoryLeakTests {
     @Test
     void simpleLeakTest(final FxRobot fxRobot) {
         JMemoryBuddy.memoryTest(checker -> {
-            AtomicReference<XYChart> chartRef = new AtomicReference<>();
+            AtomicReference<Chart> chartRef = new AtomicReference<>();
             // add chart to scene
             fxRobot.interact(() -> {
-                final XYChart chart = new XYChart();
+                final Chart chart = new Chart();
                 chart.getPlugins().addAll(
                         new Zoomer(),
                         new EditAxis(),
@@ -66,7 +66,7 @@ class MemoryLeakTests {
             });
             // track chart components in memory checker
             fxRobot.interact(() -> {
-                final XYChart chart = chartRef.get();
+                final Chart chart = chartRef.get();
                 checker.assertCollectable(chart);
                 checker.assertCollectable(chart.getLegend());
                 chart.getAxes().forEach(checker::assertCollectable);

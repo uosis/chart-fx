@@ -1,15 +1,14 @@
 package io.fair_acc.sample.chart;
 
-import javafx.application.Application;
-import javafx.scene.Node;
-import javafx.scene.layout.StackPane;
-import javafx.stage.Stage;
-
-import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.dataset.spi.DoubleDataSet;
+import javafx.application.Application;
+import javafx.scene.Node;
+import javafx.scene.layout.StackPane;
+import javafx.stage.Stage;
 
 /**
  *
@@ -29,7 +28,8 @@ public class LogAxisSample extends ChartSample {
         yAxis.setLogAxis(true);
         // yAxis.setLogarithmBase(2);
 
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         final Zoomer zoomer = new Zoomer();
         zoomer.setPannerEnabled(false); // not recommended (ie. Axes do not support complex numbers, e.g. 'log(-1)')
         chart.getPlugins().add(zoomer); // zoom around

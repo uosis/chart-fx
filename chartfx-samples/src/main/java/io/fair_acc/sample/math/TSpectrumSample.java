@@ -5,6 +5,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -24,8 +25,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.TableViewer;
@@ -115,7 +114,8 @@ public class TSpectrumSample extends Application {
         final DefaultNumericAxis xAxis = new DefaultNumericAxis("frequency", "frev");
         final DefaultNumericAxis yAxis = new DefaultNumericAxis("magnitude", "dB");
         yAxis.setForceZeroInRange(true);
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getPlugins().add(new Zoomer());
         chart.getPlugins().add(new EditAxis());
         chart.getPlugins().add(new TableViewer());

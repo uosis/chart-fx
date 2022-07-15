@@ -64,10 +64,10 @@ public class Screenshot extends ChartPlugin {
 
         chartProperty().addListener((change, o, n) -> {
             if (o != null) {
-                o.getToolBar().getChildren().remove(screenshotButtons);
+                o.getToolBar().getItems().remove(screenshotButtons);
             }
             if (n != null && isAddButtonsToToolBar()) {
-                n.getToolBar().getChildren().add(screenshotButtons);
+                n.getToolBar().getItems().add(screenshotButtons);
             }
         });
     }

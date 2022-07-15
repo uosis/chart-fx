@@ -3,6 +3,7 @@ package io.fair_acc.sample.chart;
 import java.util.List;
 import java.util.Map;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.collections.ListChangeListener;
 import javafx.geometry.Pos;
@@ -16,8 +17,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.plugins.Zoomer;
@@ -119,7 +118,7 @@ public class ZoomerSample extends ChartSample {
     }
 
     private static Chart getTestChart(final String title, final DataSet testDataSet) {
-        final Chart chart = new XYChart();
+        final Chart chart = new Chart();
         chart.setTitle(title);
         chart.setLegendVisible(false);
         chart.getDatasets().add(testDataSet);

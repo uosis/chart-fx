@@ -4,6 +4,8 @@
 
 package io.fair_acc.chartfx.plugins;
 
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
@@ -28,7 +30,7 @@ import io.fair_acc.dataset.spi.utils.Tuple;
  *
  * @author Grzegorz Kruk
  */
-public class CrosshairIndicator extends AbstractDataFormattingPlugin {
+public class CrosshairIndicator extends ChartPlugin {
     public static final String STYLE_CLASS_PATH = "chart-crosshair-path";
     public static final String STYLE_CLASS_LABEL = "chart-crosshair-label";
     private static final int LABEL_X_OFFSET = 15;
@@ -36,6 +38,8 @@ public class CrosshairIndicator extends AbstractDataFormattingPlugin {
 
     protected final Path crosshairPath = new Path();
     protected final Text coordinatesLabel = new Text();
+
+    private final ObjectProperty<DataPointFormatter> formatter = new SimpleObjectProperty<>(this, "Default Datapoint formatter", new DataPointFormatter());
 
     /**
      * Creates a new instance of CrosshairIndicator class.
@@ -48,20 +52,25 @@ public class CrosshairIndicator extends AbstractDataFormattingPlugin {
         coordinatesLabel.setManaged(false);
         coordinatesLabel.setId("crosshairIndicator-Label");
 
+        getChartChildren().addAll(crosshairPath, coordinatesLabel);
+
         final EventHandler<MouseEvent> mouseMoveHandler = (final MouseEvent event) -> {
             if (!isMouseEventWithinCanvas(event)) {
-                getChartChildren().remove(crosshairPath);
-                getChartChildren().remove(coordinatesLabel);
+                crosshairPath.setManaged(false);
+                coordinatesLabel.setManaged(false);
+                crosshairPath.setVisible(false);
+                coordinatesLabel.setVisible(false);
                 return;
             }
 
-            final Bounds plotAreaBounds = getChart().getPlotArea().getBoundsInLocal();
+            final Bounds plotAreaBounds = getChart().getPlotArea().getBoundsInParent();
             updatePath(event, plotAreaBounds);
             updateLabel(event, plotAreaBounds);
 
-            if (!getChartChildren().contains(crosshairPath)) {
-                getChartChildren().addAll(crosshairPath, coordinatesLabel);
-            }
+            crosshairPath.setManaged(true);
+            coordinatesLabel.setManaged(true);
+            crosshairPath.setVisible(true);
+            coordinatesLabel.setVisible(true);
         };
         registerInputEventHandler(MouseEvent.ANY, mouseMoveHandler);
     }
@@ -76,7 +85,7 @@ public class CrosshairIndicator extends AbstractDataFormattingPlugin {
         if (tuple == null) {
             return "unknown coordinate";
         }
-        return formatData(getChart(), tuple);
+        return formatter.get().formatData(getChart(), tuple);
     }
 
     private void updateLabel(final MouseEvent event, final Bounds plotAreaBounds) {
@@ -104,5 +113,13 @@ public class CrosshairIndicator extends AbstractDataFormattingPlugin {
         path.add(new LineTo(plotAreaBounds.getMaxX(), event.getY()));
         path.add(new MoveTo(event.getX(), plotAreaBounds.getMinY() + 1));
         path.add(new LineTo(event.getX(), plotAreaBounds.getMaxY()));
+    }
+
+    public DataPointFormatter getFormatter() {
+        return formatter.get();
+    }
+
+    public ObjectProperty<DataPointFormatter> formatterProperty() {
+        return formatter;
     }
 }

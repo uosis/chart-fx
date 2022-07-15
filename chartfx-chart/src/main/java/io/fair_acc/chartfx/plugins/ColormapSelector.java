@@ -27,17 +27,17 @@ public class ColormapSelector extends ChartPlugin {
         super();
         chartProperty().addListener((change, o, n) -> {
             if (o != null) {
-                o.getToolBar().getChildren().remove(dropdown);
+                o.getToolBar().getItems().remove(dropdown);
             }
             if (n != null && isShowInToolbar()) {
-                n.getToolBar().getChildren().add(dropdown);
+                n.getToolBar().getItems().add(dropdown);
             }
         });
         showInToolbar.addListener((prop, o, n) -> {
             if (Boolean.TRUE.equals(n)) {
-                getChart().getToolBar().getChildren().add(dropdown);
+                getChart().getToolBar().getItems().add(dropdown);
             } else {
-                getChart().getToolBar().getChildren().remove(dropdown);
+                getChart().getToolBar().getItems().remove(dropdown);
             }
         });
     }

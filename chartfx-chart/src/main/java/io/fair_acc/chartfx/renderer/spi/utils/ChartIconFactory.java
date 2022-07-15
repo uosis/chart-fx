@@ -5,13 +5,12 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-
-import io.fair_acc.chartfx.Chart;
 
 public final class ChartIconFactory { // NOPMD - nomen est omen
 

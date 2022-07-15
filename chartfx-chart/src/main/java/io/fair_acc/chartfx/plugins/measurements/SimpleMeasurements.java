@@ -9,12 +9,12 @@ import static io.fair_acc.chartfx.plugins.measurements.SimpleMeasurements.Measur
 
 import java.util.Optional;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.control.ButtonType;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisLabelFormatter;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;

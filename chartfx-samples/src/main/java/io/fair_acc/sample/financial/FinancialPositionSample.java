@@ -4,7 +4,7 @@ import static io.fair_acc.sample.financial.service.StandardTradePlanAttributes.P
 
 import java.text.ParseException;
 
-import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.Chart;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
 import io.fair_acc.chartfx.renderer.spi.financial.CandleStickRenderer;
@@ -24,7 +24,7 @@ import io.fair_acc.dataset.spi.financial.api.attrs.AttributeModel;
  * @author afischer
  */
 public class FinancialPositionSample extends AbstractBasicFinancialApplication {
-    protected void prepareRenderers(XYChart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
+    protected void prepareRenderers(Chart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet) {
         // define context
         AttributeModel context = new AttributeModel()
                                          .setAttribute(POSITIONS, new PositionContainer());

@@ -11,6 +11,10 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -24,13 +28,8 @@ import org.slf4j.LoggerFactory;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.LineStyle;
-import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.chartfx.utils.FXUtils;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.AbstractErrorDataSet;
@@ -95,7 +94,7 @@ public class HistogramRendererTests {
         assertDoesNotThrow(() -> renderer.setAutoSorting(false));
         assertFalse(renderer.isAutoSorting());
 
-        final XYChart chart = new XYChart();
+        final Chart chart = new Chart();
         assertNotNull(renderer.chartProperty());
         assertNull(renderer.getChart());
         assertDoesNotThrow(renderer::requestLayout);
@@ -135,8 +134,8 @@ public class HistogramRendererTests {
         yAxis.setAutoRangeRounding(false);
         yAxis.setAutoRangePadding(0.3);
 
-        final XYChart chart;
-        chart = new XYChart(vertical ? yAxis : xAxis, vertical ? xAxis : yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(vertical ? yAxis : xAxis, vertical ? xAxis : yAxis);
         chart.getRenderers().set(0, renderer);
         chart.legendVisibleProperty().set(true);
         chart.setLegendVisible(false);

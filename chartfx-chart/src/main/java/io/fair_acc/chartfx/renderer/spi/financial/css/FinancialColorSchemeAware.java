@@ -1,6 +1,6 @@
 package io.fair_acc.chartfx.renderer.spi.financial.css;
 
-import io.fair_acc.chartfx.XYChart;
+import io.fair_acc.chartfx.Chart;
 
 public interface FinancialColorSchemeAware {
     /**
@@ -12,7 +12,7 @@ public interface FinancialColorSchemeAware {
      * @param chart             prepared chart for visualization.
      * @throws Exception if processing fails
      */
-    void applyTo(String theme, String customColorScheme, XYChart chart) throws Exception;
+    void applyTo(String theme, String customColorScheme, Chart chart) throws Exception;
 
     /**
      * Apply theme to the whole chart domain object and attached renders. The renders have to be present before
@@ -22,5 +22,5 @@ public interface FinancialColorSchemeAware {
      * @param chart prepared chart for visualization.
      * @throws Exception if processing fails
      */
-    void applyTo(String theme, XYChart chart) throws Exception;
+    void applyTo(String theme, Chart chart) throws Exception;
 }

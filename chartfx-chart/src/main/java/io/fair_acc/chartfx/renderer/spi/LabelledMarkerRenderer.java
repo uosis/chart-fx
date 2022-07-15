@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -22,8 +23,6 @@ import javafx.scene.text.TextAlignment;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -68,8 +67,8 @@ public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMa
      * @param indexMin minimum index of data set to be drawn
      * @param indexMax maximum index of data set to be drawn
      */
-    protected void drawHorizontalLabelledMarker(final GraphicsContext gc, final XYChart chart, final DataSet dataSet,
-            final int indexMin, final int indexMax) {
+    protected void drawHorizontalLabelledMarker(final GraphicsContext gc, final Chart chart, final DataSet dataSet,
+                                                final int indexMin, final int indexMax) {
         final Axis yAxis = this.getFirstAxis(Orientation.VERTICAL, chart);
 
         gc.save();
@@ -127,7 +126,7 @@ public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMa
      * @param indexMin minimum index of data set to be drawn
      * @param indexMax maximum index of data set to be drawn
      */
-    protected void drawVerticalLabelledMarker(final GraphicsContext gc, final XYChart chart, final DataSet dataSet,
+    protected void drawVerticalLabelledMarker(final GraphicsContext gc, final Chart chart, final DataSet dataSet,
             final int indexMin, final int indexMax) {
         Axis xAxis = this.getFirstAxis(Orientation.HORIZONTAL);
         if (xAxis == null) {
@@ -216,11 +215,10 @@ public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMa
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
             final ObservableList<DataSet> datasets) {
         final long start = ProcessingProfiler.getTimeStamp();
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             throw new InvalidParameterException(
                     "must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
-        final XYChart xyChart = (XYChart) chart;
 
         // make local copy and add renderer specific data sets
         final List<DataSet> localDataSetList = new ArrayList<>(datasets);
@@ -235,7 +233,7 @@ public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMa
 
         Axis xAxis = this.getFirstAxis(Orientation.HORIZONTAL);
         if (xAxis == null) {
-            xAxis = xyChart.getFirstAxis(Orientation.HORIZONTAL);
+            xAxis = chart.getFirstAxis(Orientation.HORIZONTAL);
         }
         if (xAxis == null) {
             if (LOGGER.isWarnEnabled()) {
@@ -270,12 +268,12 @@ public class LabelledMarkerRenderer extends AbstractDataSetManagement<LabelledMa
                 drawnDataSet.add(dataSet);
                 if (isHorizontalMarker()) {
                     // draw horizontal marker
-                    drawHorizontalLabelledMarker(gc, xyChart, dataSet, indexMin, indexMax);
+                    drawHorizontalLabelledMarker(gc, chart, dataSet, indexMin, indexMax);
                 }
 
                 if (isVerticalMarker()) {
                     // draw vertical marker
-                    drawVerticalLabelledMarker(gc, xyChart, dataSet, indexMin, indexMax);
+                    drawVerticalLabelledMarker(gc, chart, dataSet, indexMin, indexMax);
                 }
             });
 

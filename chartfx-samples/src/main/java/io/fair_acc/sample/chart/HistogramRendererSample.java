@@ -6,6 +6,7 @@ import java.util.ArrayDeque;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.scene.Node;
@@ -14,7 +15,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.ParameterMeasurements;
 import io.fair_acc.chartfx.plugins.Zoomer;
@@ -61,7 +61,7 @@ public class HistogramRendererSample extends ChartSample {
         final BorderPane root = new BorderPane();
 
         // first chart
-        final XYChart chart1 = new XYChart();
+        final Chart chart1 = new Chart();
         chart1.setTitle("Basic Histograms");
         final Zoomer zoomer = new Zoomer();
         zoomer.setAutoZoomEnabled(true);
@@ -84,7 +84,7 @@ public class HistogramRendererSample extends ChartSample {
         chart1.getRenderers().add(metaRenderer);
 
         // second chart
-        final XYChart chart2 = new XYChart();
+        final Chart chart2 = new Chart();
         chart2.setTitle("Stacked Histograms");
         final Zoomer zoomer2 = new Zoomer();
         zoomer2.setAutoZoomEnabled(true);

@@ -1,12 +1,12 @@
 package io.fair_acc.chartfx.plugins;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.util.StringConverter;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.spi.MetricPrefix;
 import io.fair_acc.chartfx.renderer.Renderer;
@@ -19,7 +19,7 @@ import io.fair_acc.dataset.spi.utils.Tuple;
  * @author Grzegorz Kruk
  * @author rstein
  */
-public abstract class AbstractDataFormattingPlugin extends ChartPlugin {
+public class DataPointFormatter {
     private final ObjectProperty<StringConverter<Number>> xValueFormatter = new SimpleObjectProperty<>(this, "xValueFormatter");
     private final ObjectProperty<StringConverter<Number>> yValueFormatter = new SimpleObjectProperty<>(this, "yValueFormatter");
     private StringConverter<Number> defaultXValueFormatter;
@@ -28,18 +28,10 @@ public abstract class AbstractDataFormattingPlugin extends ChartPlugin {
     /**
      * Creates a new instance of AbstractDataIndicator.
      */
-    protected AbstractDataFormattingPlugin() {
+    public DataPointFormatter() {
         super();
-        chartProperty().addListener((obs, oldChart, newChart) -> {
-            if (newChart != null) {
-                if (!(newChart instanceof XYChart)) {
-                    throw new IllegalArgumentException("cannot use chart of type '" + newChart.getClass().getSimpleName() + "' for this plug-ing");
-                }
-
-                defaultXValueFormatter = AbstractDataFormattingPlugin.createDefaultFormatter(newChart.getFirstAxis(Orientation.HORIZONTAL));
-                defaultYValueFormatter = AbstractDataFormattingPlugin.createDefaultFormatter(newChart.getFirstAxis(Orientation.VERTICAL));
-            }
-        });
+        defaultXValueFormatter = DataPointFormatter.createDefaultFormatter(null);
+        defaultYValueFormatter = DataPointFormatter.createDefaultFormatter(null);
     }
 
     /**
@@ -126,38 +118,7 @@ public abstract class AbstractDataFormattingPlugin extends ChartPlugin {
      * @return formatted data
      */
     protected String formatData(final Chart chart, final Tuple<Number, Number> data) {
-        if (chart.getAxes().size() == 2) {
-            // special case of only two axes
-            final Axis xAxis = chart.getFirstAxis(Orientation.HORIZONTAL);
-            final Axis yAxis = chart.getFirstAxis(Orientation.VERTICAL);
-            return getXValueFormatter(xAxis).toString(data.getXValue()) + ", " + getYValueFormatter(yAxis).toString(data.getYValue());
-        }
-
-        // any other axes
-        final StringBuilder result = new StringBuilder();
-        for (final Axis axis : chart.getAxes()) {
-            final Side side = axis.getSide();
-            if (side == null) {
-                continue;
-            }
-
-            final String axisPrimaryLabel = axis.getName();
-            String axisUnit = axis.getUnit();
-            final String axisPrefix = MetricPrefix.getShortPrefix(axis.getUnitScaling());
-            final boolean isAutoScaling = axis.isAutoUnitScaling();
-            if (isAutoScaling && axisUnit == null) {
-                axisUnit = " a.u.";
-            }
-
-            result.append(axisPrimaryLabel).append(" = ");
-            result.append(side.isHorizontal() ? getXValueFormatter(axis).toString(data.getXValue()) : getYValueFormatter(axis).toString(data.getYValue()));
-            if (axisUnit != null) {
-                result.append(axisPrimaryLabel).append(" [").append(axisPrefix).append(axisUnit).append(']');
-            }
-            result.append('\n');
-        }
-
-        return result.toString();
+        return formatData(chart.getAxes(), data);
     }
 
     /**
@@ -170,10 +131,13 @@ public abstract class AbstractDataFormattingPlugin extends ChartPlugin {
      * @return formatted data
      */
     protected String formatData(final Renderer renderer, final Tuple<Number, Number> data) {
-        if (renderer.getAxes().size() == 2) { // special case of only two axes
+        return formatData(renderer.getAxes(), data);
+    }
+    protected String formatData(final ObservableList<Axis> axes, final Tuple<Number, Number> data) {
+        if (axes.size() == 2) { // special case of only two axes
             // Get Axes for the Renderer
-            final Axis xAxis = renderer.getAxes().stream().filter(ax -> ax.getSide().isHorizontal()).findFirst().orElse(null);
-            final Axis yAxis = renderer.getAxes().stream().filter(ax -> ax.getSide().isVertical()).findFirst().orElse(null);
+            final Axis xAxis = Chart.getFirstAxis(axes, Orientation.HORIZONTAL);
+            final Axis yAxis = Chart.getFirstAxis(axes, Orientation.VERTICAL);
             if (xAxis == null || yAxis == null) {
                 return String.format("DataPoint@(%.3f,%.3f)", data.getXValue().doubleValue(), data.getYValue().doubleValue());
             }
@@ -182,7 +146,7 @@ public abstract class AbstractDataFormattingPlugin extends ChartPlugin {
 
         // any other axes
         final StringBuilder result = new StringBuilder();
-        for (final Axis axis : renderer.getAxes()) {
+        for (final Axis axis : axes) {
             final Side side = axis.getSide();
             if (side == null) {
                 continue;
@@ -219,7 +183,7 @@ public abstract class AbstractDataFormattingPlugin extends ChartPlugin {
         // return (StringConverter<Number>) new
         // NumberAxis.DefaultFormatter((NumberAxis) axis);
         // }
-        return new AbstractDataFormattingPlugin.DefaultFormatter<>();
+        return new DataPointFormatter.DefaultFormatter<>();
     }
 
     private static class DefaultFormatter<T> extends StringConverter<T> {

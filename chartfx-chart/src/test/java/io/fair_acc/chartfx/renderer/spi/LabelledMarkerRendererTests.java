@@ -6,6 +6,10 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
+import io.fair_acc.chartfx.ui.utils.TestFx;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -17,12 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.XYChartCss;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
-import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
-import io.fair_acc.chartfx.ui.utils.TestFx;
 import io.fair_acc.chartfx.utils.FXUtils;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.DoubleDataSet;
@@ -46,7 +46,7 @@ public class LabelledMarkerRendererTests {
     private static final int WIDTH = 300;
     private static final int HEIGHT = 200;
     private static final int N_SAMPLES = 10;
-    private XYChart chart;
+    private Chart chart;
     private LabelledMarkerRenderer renderer;
     private Image testImage;
 
@@ -54,7 +54,8 @@ public class LabelledMarkerRendererTests {
     public void start(Stage stage) {
         assertDoesNotThrow(LabelledMarkerRenderer::new);
         renderer = new LabelledMarkerRenderer();
-        chart = new XYChart(new DefaultNumericAxis(), new DefaultNumericAxis());
+        chart = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis(), new DefaultNumericAxis());
         chart.getRenderers().set(0, renderer);
         chart.legendVisibleProperty().set(true);
 

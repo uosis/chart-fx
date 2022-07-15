@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import static io.fair_acc.chartfx.renderer.spi.financial.utils.FinancialTestUtils.generateCosData;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Scene;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -15,7 +16,6 @@ import org.testfx.api.FxRobot;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.ui.geometry.Side;
 import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils.SelectiveJavaFxInterceptor;
@@ -26,7 +26,7 @@ import io.fair_acc.dataset.spi.DefaultErrorDataSet;
 @ExtendWith(SelectiveJavaFxInterceptor.class)
 class YWatchValueIndicatorTest {
     private YWatchValueIndicator valueWatchIndicatorTested;
-    private XYChart chart;
+    private Chart chart;
     private DefaultNumericAxis yAxis;
 
     @Start
@@ -45,7 +45,8 @@ class YWatchValueIndicatorTest {
         generateCosData(dataSet);
 
         // prepare chart structure
-        chart = new XYChart(xAxis, yAxis);
+        chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getDatasets().add(dataSet);
         chart.getPlugins().addAll(valueWatchIndicatorTested, valueWatchIndicatorTested1, valueWatchIndicatorTested2);
         stage.setScene(new Scene(chart));
@@ -55,13 +56,13 @@ class YWatchValueIndicatorTest {
     @TestFx
     void leftSide() {
         yAxis.setSide(Side.RIGHT);
-        chart.layoutChildren();
+        //chart.layoutChildren();
     }
 
     @TestFx
     void rightSide() {
         yAxis.setSide(Side.RIGHT);
-        chart.layoutChildren();
+        //chart.layoutChildren();
 
         // change to unseen position
         yAxis.setAutoRanging(false);
@@ -100,9 +101,7 @@ class YWatchValueIndicatorTest {
             chart.requestLayout();
         });
         robot.interrupt(1);
-        robot.interact(() -> {
-            yAxis.setSide(Side.RIGHT);
-        });
+        robot.interact(() -> yAxis.setSide(Side.RIGHT));
         robot.interrupt(1);
         robot.interact(() -> {
             valueWatchIndicatorTested.setPreventOcclusion(false);

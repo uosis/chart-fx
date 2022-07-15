@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
@@ -15,7 +16,6 @@ import javafx.stage.Stage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.TableViewer;
@@ -45,7 +45,8 @@ public class ChartPerformanceGraph extends ChartSample {
 
         DefaultNumericAxis yAxis = new DefaultNumericAxis("CPU load", "%");
         yAxis.setForceZeroInRange(true);
-        final XYChart chart = new XYChart(xAxis, yAxis);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getPlugins().add(new Zoomer()); // standard plugin, useful for most cases
         chart.getPlugins().add(new TableViewer());
         chart.getPlugins().add(new EditAxis());

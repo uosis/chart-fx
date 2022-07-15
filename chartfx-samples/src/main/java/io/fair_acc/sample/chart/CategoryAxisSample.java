@@ -6,12 +6,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Locale;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.application.Application;
 import javafx.scene.Node;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.spi.CategoryAxis;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -39,7 +39,8 @@ public class CategoryAxisSample extends ChartSample {
         xAxis.setMaxMajorTickLabelCount(N_SAMPLES + 1);
         final DefaultNumericAxis yAxis = new DefaultNumericAxis("yAxis");
 
-        final XYChart lineChartPlot = new XYChart(xAxis, yAxis);
+        final Chart lineChartPlot = new Chart();
+        lineChartPlot.getAxes().addAll(xAxis, yAxis);
         // set them false to make the plot faster
         lineChartPlot.setAnimated(false);
         lineChartPlot.getRenderers().clear();

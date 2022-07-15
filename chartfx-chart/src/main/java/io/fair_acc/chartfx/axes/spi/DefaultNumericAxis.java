@@ -70,7 +70,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
                     setMinorTickCount(0);
                 } else {
                     axisTransform = logTransform;
-                    setMinorTickCount(AbstractAxisParameter.DEFAULT_MINOR_TICK_COUNT);
+                    setMinorTickCount(AbstractAxis.DEFAULT_MINOR_TICK_COUNT);
                 }
                 if (getMin() <= 0) {
                     isUpdating = true;
@@ -85,7 +85,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
                 if (DefaultNumericAxis.this.isTimeAxis()) {
                     setMinorTickCount(0);
                 } else {
-                    setMinorTickCount(AbstractAxisParameter.DEFAULT_MINOR_TICK_COUNT);
+                    setMinorTickCount(AbstractAxis.DEFAULT_MINOR_TICK_COUNT);
                 }
             }
 
@@ -141,7 +141,7 @@ public class DefaultNumericAxis extends AbstractAxis implements Axis {
             setAutoRanging(true);
         }
         setTickUnit(tickUnit);
-        setMinorTickCount(AbstractAxisParameter.DEFAULT_MINOR_TICK_COUNT);
+        setMinorTickCount(AbstractAxis.DEFAULT_MINOR_TICK_COUNT);
 
         isUpdating = false;
     }

@@ -5,11 +5,11 @@ import static io.fair_acc.chartfx.renderer.spi.financial.css.FinancialCss.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.spi.financial.service.DataSetAware;
 import io.fair_acc.chartfx.renderer.spi.financial.service.OhlcvRendererEpData;
@@ -50,7 +50,7 @@ import io.fair_acc.dataset.DataSet;
 @SuppressWarnings({ "PMD.NPathComplexity" })
 public class PositionFinancialRendererPaintAfterEP implements RendererPaintAfterEP, DataSetAware {
     protected final DataSet ds;
-    protected final XYChart chart;
+    protected final Chart chart;
     protected final Axis xAxis;
     protected final Axis yAxis;
 
@@ -69,7 +69,7 @@ public class PositionFinancialRendererPaintAfterEP implements RendererPaintAfter
     private double positionOrderLinkageLineDash;
     private double positionOrderLinkageLineWidth;
 
-    public PositionFinancialRendererPaintAfterEP(final DataSet positionDataSet, final XYChart chart) {
+    public PositionFinancialRendererPaintAfterEP(final DataSet positionDataSet, final Chart chart) {
         this.ds = positionDataSet;
         this.chart = chart;
         xAxis = chart.getXAxis();

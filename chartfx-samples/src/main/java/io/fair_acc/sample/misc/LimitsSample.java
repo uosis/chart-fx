@@ -1,16 +1,17 @@
 package io.fair_acc.sample.misc;
 
+import io.fair_acc.chartfx.Chart;
 import io.fair_acc.sample.chart.ChartSample;
+import javafx.application.Platform;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.EditAxis;
 import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.spi.ErrorDataSetRenderer;
-import io.fair_acc.chartfx.ui.HiddenSidesPane;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
 import io.fair_acc.math.MathBaseFast;
 
@@ -28,9 +29,10 @@ public class LimitsSample extends ChartSample {
     public Node getChartPanel(final Stage primaryStage) {
         var xAxis = new DefaultNumericAxis("time", "s");
         var yAxis = new DefaultNumericAxis("y-value", "a.u.");
-        var chart = new XYChart(xAxis, yAxis);
-        final HiddenSidesPane hiddenSidePane = chart.getPlotArea();
-        hiddenSidePane.setTriggerDistance(0);
+        var chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
+        //final HiddenSidesPane hiddenSidePane = chart.getPlotArea();
+        //hiddenSidePane.setTriggerDistance(0);
 
         chart.getPlugins().add(new Zoomer());
         chart.getPlugins().add(new EditAxis());

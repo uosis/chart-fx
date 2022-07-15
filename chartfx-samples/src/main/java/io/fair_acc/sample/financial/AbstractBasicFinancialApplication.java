@@ -28,8 +28,6 @@ import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -240,7 +238,8 @@ public abstract class AbstractBasicFinancialApplication extends Application {
         final DefaultNumericAxis yAxis1 = new DefaultNumericAxis("price", "points");
 
         // prepare chart structure
-        final XYChart chart = new XYChart(xAxis1, yAxis1);
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(xAxis1, yAxis1);
         chart.setTitle(theme);
         chart.setLegendVisible(true);
         chart.setPrefSize(prefChartWidth, prefChartHeight);
@@ -271,7 +270,7 @@ public abstract class AbstractBasicFinancialApplication extends Application {
         return chart;
     }
 
-    protected void applyColorScheme(String theme, XYChart chart) {
+    protected void applyColorScheme(String theme, Chart chart) {
         try {
             financialColorScheme.applyTo(theme, chart);
         } catch (Exception e) {
@@ -351,7 +350,7 @@ public abstract class AbstractBasicFinancialApplication extends Application {
      *
      * @param chart for applying renderers
      */
-    protected abstract void prepareRenderers(XYChart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet);
+    protected abstract void prepareRenderers(Chart chart, OhlcvDataSet ohlcvDataSet, DefaultDataSet indiSet);
 
     //--------- replay support ---------
 

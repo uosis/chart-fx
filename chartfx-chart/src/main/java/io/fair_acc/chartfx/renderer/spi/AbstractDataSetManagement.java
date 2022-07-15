@@ -1,12 +1,12 @@
 package io.fair_acc.chartfx.renderer.spi;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.renderer.Renderer;
 import io.fair_acc.dataset.DataSet;
@@ -15,6 +15,8 @@ import io.fair_acc.dataset.spi.DoubleDataSet;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
 import io.fair_acc.dataset.utils.NoDuplicatesList;
 import io.fair_acc.dataset.utils.ProcessingProfiler;
+
+import java.util.Objects;
 
 /**
  * @author rstein
@@ -55,28 +57,6 @@ public abstract class AbstractDataSetManagement<R extends Renderer> implements R
         return dataSets;
     }
 
-    public Axis getFirstAxis(final Orientation orientation) {
-        for (final Axis axis : getAxes()) {
-            if (axis.getSide() == null) {
-                continue;
-            }
-            switch (orientation) {
-            case VERTICAL:
-                if (axis.getSide().isVertical()) {
-                    return axis;
-                }
-                break;
-            case HORIZONTAL:
-            default:
-                if (axis.getSide().isHorizontal()) {
-                    return axis;
-                }
-                break;
-            }
-        }
-        return null;
-    }
-
     /**
      * Returns the first axis for a specific orientation and falls back to the first axis
      * of the chart if no such axis exists. The chart will automatically return a default
@@ -89,12 +69,12 @@ public abstract class AbstractDataSetManagement<R extends Renderer> implements R
      * @param fallback The chart from which to get the axis if no axis is present
      * @return The requested axis
      */
-    protected Axis getFirstAxis(final Orientation orientation, final XYChart fallback) {
-        final Axis axis = getFirstAxis(orientation);
-        if (axis == null) {
-            return fallback.getFirstAxis(orientation);
-        }
-        return axis;
+    protected Axis getFirstAxis(final Orientation orientation, final Chart fallback) {
+        return Objects.requireNonNullElseGet(Chart.getFirstAxis(getAxes(), orientation), () -> fallback.getFirstAxis(orientation));
+    }
+
+    public Axis getFirstAxis(final Orientation orientation) {
+        return Chart.getFirstAxis(getAxes(), orientation);
     }
 
     /**

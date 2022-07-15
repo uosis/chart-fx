@@ -5,6 +5,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.Collections;
 
+import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
+import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -19,12 +22,9 @@ import org.slf4j.LoggerFactory;
 import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.renderer.ErrorStyle;
 import io.fair_acc.chartfx.renderer.LineStyle;
-import io.fair_acc.chartfx.ui.utils.FuzzyTestImageUtils;
-import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils;
 import io.fair_acc.chartfx.utils.FXUtils;
 import io.fair_acc.dataset.DataSet;
 import io.fair_acc.dataset.spi.DoubleErrorDataSet;
@@ -53,7 +53,7 @@ public class ErrorDataSetRendererTests {
     private static final int N_SAMPLES = 10000;
     private final DefaultNumericAxis xAxis = new DefaultNumericAxis();
     private final DefaultNumericAxis yAxis = new DefaultNumericAxis();
-    private XYChart chart;
+    private Chart chart;
     private ErrorDataSetRenderer renderer;
     private Image testImage;
 
@@ -62,7 +62,8 @@ public class ErrorDataSetRendererTests {
         assertDoesNotThrow((ThrowingSupplier<ErrorDataSetRenderer>) ErrorDataSetRenderer::new);
         renderer = new ErrorDataSetRenderer();
         renderer.getDatasets().setAll(getTestDataSet());
-        chart = new XYChart(xAxis, yAxis);
+        chart = new Chart();
+        chart.getAxes().addAll(xAxis, yAxis);
         chart.getRenderers().set(0, renderer);
         chart.legendVisibleProperty().set(true);
 

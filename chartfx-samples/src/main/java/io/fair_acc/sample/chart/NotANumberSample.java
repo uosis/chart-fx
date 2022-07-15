@@ -1,10 +1,10 @@
 package io.fair_acc.sample.chart;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.scene.Node;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.plugins.DataPointTooltip;
 import io.fair_acc.chartfx.plugins.EditAxis;
@@ -32,7 +32,8 @@ public class NotANumberSample extends ChartSample {
     public Node getChartPanel(final Stage primaryStage) {
         LOGGER.atInfo().addArgument(NotANumberSample.class.getSimpleName()).log("launching sample {}");
 
-        final XYChart chart = new XYChart(new DefaultNumericAxis("x-axis"), new DefaultNumericAxis("y-axis"));
+        final Chart chart = new Chart();
+        chart.getAxes().addAll(new DefaultNumericAxis("x-axis"), new DefaultNumericAxis("y-axis"));
         chart.getPlugins().add(new Zoomer()); // standard plugin, useful for most cases
         chart.getPlugins().add(new EditAxis());
         chart.getPlugins().add(new DataPointTooltip());

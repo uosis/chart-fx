@@ -7,6 +7,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
@@ -23,7 +24,6 @@ import org.testfx.framework.junit5.ApplicationExtension;
 import org.testfx.framework.junit5.Start;
 import org.testfx.robot.Motion;
 
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.ui.utils.JavaFXInterceptorUtils.SelectiveJavaFxInterceptor;
 import io.fair_acc.chartfx.ui.utils.TestFx;
@@ -39,11 +39,11 @@ import io.fair_acc.dataset.testdata.spi.SineFunction;
 @ExtendWith(SelectiveJavaFxInterceptor.class)
 class CrosshairIndicatorTest {
     private final Pane boxLeft = new Pane();
-    private XYChart chart;
+    private Chart chart;
 
     @Start
     void start(Stage stage) {
-        chart = new XYChart(new DefaultNumericAxis(), new DefaultNumericAxis());
+        chart = new Chart();
         chart.getDatasets().add(new SineFunction("test function", 100));
 
         boxLeft.setStyle("-fx-background-color: red;");

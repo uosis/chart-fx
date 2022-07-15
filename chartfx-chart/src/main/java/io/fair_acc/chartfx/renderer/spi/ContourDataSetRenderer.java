@@ -8,11 +8,13 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
+import io.fair_acc.chartfx.Chart;
 import javafx.collections.ObservableList;
 import javafx.geometry.Orientation;
 import javafx.scene.Node;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.chart.XYChart;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.layout.HBox;
@@ -26,8 +28,6 @@ import javafx.scene.shape.StrokeType;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import io.fair_acc.chartfx.Chart;
-import io.fair_acc.chartfx.XYChart;
 import io.fair_acc.chartfx.axes.Axis;
 import io.fair_acc.chartfx.axes.AxisTransform;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
@@ -387,9 +387,9 @@ public class ContourDataSetRenderer extends AbstractContourDataSetRendererParame
 
     @Override
     public List<DataSet> render(final GraphicsContext gc, final Chart chart, final int dataSetOffset,
-            final ObservableList<DataSet> datasets) {
+                                final ObservableList<DataSet> datasets) {
         final long start = ProcessingProfiler.getTimeStamp();
-        if (!(chart instanceof XYChart)) {
+        if (chart == null) {
             throw new InvalidParameterException("must be derivative of XYChart for renderer - " + this.getClass().getSimpleName());
         }
 
@@ -402,7 +402,6 @@ public class ContourDataSetRenderer extends AbstractContourDataSetRendererParame
             return Collections.emptyList();
         }
 
-        final XYChart xyChart = (XYChart) chart;
         long mid = ProcessingProfiler.getTimeDiff(start, "init");
         // N.B. importance of reverse order: start with last index, so that
         // most(-like) important DataSet is drawn on
@@ -422,7 +421,7 @@ public class ContourDataSetRenderer extends AbstractContourDataSetRendererParame
                     return false;
                 }
 
-                localCache = new ContourDataSetCache(xyChart, this, dataSet); // NOPMD
+                localCache = new ContourDataSetCache(chart, this, dataSet); // NOPMD
                 ProcessingProfiler.getTimeDiff(stop, "updateCachedVariables");
                 return true;
             });
