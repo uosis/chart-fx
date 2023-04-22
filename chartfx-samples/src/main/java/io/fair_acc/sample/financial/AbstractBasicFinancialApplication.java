@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Map;
 
 import io.fair_acc.chartfx.Chart;
+import io.fair_acc.chartfx.plugins.*;
 import io.fair_acc.sample.financial.service.consolidate.OhlcvConsolidationAddon;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -34,10 +35,6 @@ import io.fair_acc.chartfx.axes.AxisLabelOverlapPolicy;
 import io.fair_acc.chartfx.axes.AxisMode;
 import io.fair_acc.chartfx.axes.spi.DefaultNumericAxis;
 import io.fair_acc.chartfx.axes.spi.format.DefaultTimeFormatter;
-import io.fair_acc.chartfx.plugins.ChartPlugin;
-import io.fair_acc.chartfx.plugins.DataPointTooltip;
-import io.fair_acc.chartfx.plugins.EditAxis;
-import io.fair_acc.chartfx.plugins.Zoomer;
 import io.fair_acc.chartfx.renderer.spi.financial.AbstractFinancialRenderer;
 import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeAware;
 import io.fair_acc.chartfx.renderer.spi.financial.css.FinancialColorSchemeConfig;
@@ -184,7 +181,7 @@ public abstract class AbstractBasicFinancialApplication extends Application {
         Chart[] charts = Arrays.stream(getDefaultColorSchemes()).map(this::getDefaultFinancialTestChart).toArray(Chart[] ::new);
         root.getChildren().addAll(charts);
 
-        return new Scene(root, prefSceneWidth, prefSceneHeight);
+        return new Scene(new ScrollPane(root), prefSceneWidth, prefSceneHeight);
     }
 
     /**
@@ -251,6 +248,7 @@ public abstract class AbstractBasicFinancialApplication extends Application {
         chart.getPlugins().add(new Zoomer(AxisMode.X));
         chart.getPlugins().add(new EditAxis());
         chart.getPlugins().add(new DataPointTooltip());
+        chart.getPlugins().add(new CrosshairIndicator());
 
         // basic chart financial structure style
         chart.getGridRenderer().setDrawOnTop(false);
