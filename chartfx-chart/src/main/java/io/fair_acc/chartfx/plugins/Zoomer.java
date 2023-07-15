@@ -29,6 +29,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Tooltip;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.input.ScrollEvent;
 import javafx.scene.layout.HBox;
@@ -83,10 +84,6 @@ public class Zoomer extends ChartPlugin {
     private static final String ICON_ZOOM_H = "fa-arrows-h:" + FONT_SIZE;
     private static final String ICON_ZOOM_V = "fa-arrows-v:" + FONT_SIZE;
 
-    /**
-     * Default pan mouse filter passing on left mouse button with {@link MouseEvent#isControlDown() control key down}.
-     */
-    public static final Predicate<MouseEvent> DEFAULT_MOUSE_FILTER = MouseEventsHelper::isOnlyMiddleButtonDown;
     private double panShiftX;
     private double panShiftY;
     private Point2D previousMouseLocation;
@@ -95,7 +92,7 @@ public class Zoomer extends ChartPlugin {
     private final IntegerProperty autoZoomThreshold = new SimpleIntegerProperty(this, "autoZoomThreshold",
             DEFAULT_AUTO_ZOOM_THRESHOLD);
     private final EventHandler<MouseEvent> panStartHandler = event -> {
-        if (isPannerEnabled() && DEFAULT_MOUSE_FILTER.test(event)) {
+        if (isPannerEnabled()) {
             panStarted(event);
             event.consume();
         }
@@ -177,7 +174,8 @@ public class Zoomer extends ChartPlugin {
     private final BooleanProperty sliderVisible = new SimpleBooleanProperty(this, "sliderVisible", true);
 
     private final EventHandler<MouseEvent> zoomInStartHandler = event -> {
-        if (getZoomInMouseFilter() == null || getZoomInMouseFilter().test(event)) {
+        if (event.isShiftDown()) {
+//        if (getZoomInMouseFilter() == null || getZoomInMouseFilter().test(event)) {
             zoomInStarted(event);
             event.consume();
         }
@@ -217,8 +215,14 @@ public class Zoomer extends ChartPlugin {
         }
     };
 
+    private final EventHandler<ScrollEvent> panScrollHandler = event -> {
+        panScroll(event);
+        event.consume();
+    };
+
     private final EventHandler<MouseEvent> zoomOutHandler = event -> {
-        if (getZoomOutMouseFilter() == null || getZoomOutMouseFilter().test(event)) {
+        if (event.isShiftDown() && event.getButton() == MouseButton.SECONDARY) {
+//        if (getZoomOutMouseFilter() == null || getZoomOutMouseFilter().test(event)) {
             final boolean zoomOutPerformed = zoomOut();
             if (zoomOutPerformed) {
                 event.consume();
@@ -873,10 +877,44 @@ public class Zoomer extends ChartPlugin {
         previousMouseLocation = mouseLocation;
     }
 
+    private void panChart(final Chart chart, final ScrollEvent event) {
+        if (!(chart instanceof XYChart)) {
+            return;
+        }
+
+        final double oldMouseX = event.getX();
+        final double oldMouseY = event.getY();
+        final double newMouseX = event.getX() + event.getDeltaX();
+        final double newMouseY = event.getY() + event.getDeltaY();
+
+        for (final Axis axis : chart.getAxes()) {
+            if (axis.getSide() == null || isOmitZoomInternal(axis)) {
+                continue;
+            }
+
+            final Side side = axis.getSide();
+
+            final double prevData = axis.getValueForDisplay(side.isHorizontal() ? oldMouseX : oldMouseY);
+            final double newData = axis.getValueForDisplay(side.isHorizontal() ? newMouseX : newMouseY);
+            final double offset = prevData - newData;
+
+            final boolean allowsShift = side.isHorizontal() ? getAxisMode().allowsX() : getAxisMode().allowsY();
+            if (!hasBoundedRange(axis) && allowsShift) {
+                axis.setAutoRanging(false);
+                // shift bounds
+                axis.set(axis.getMin() + offset, axis.getMax() + offset);
+            }
+        }
+    }
+
     private void panDragged(final MouseEvent event) {
         final Point2D mouseLocation = getLocationInPlotArea(event);
         panChart(getChart(), mouseLocation);
         previousMouseLocation = mouseLocation;
+    }
+
+    private void panScroll(final ScrollEvent event) {
+        panChart(getChart(), event);
     }
 
     private void panEnded() {
@@ -1014,11 +1052,12 @@ public class Zoomer extends ChartPlugin {
         registerInputEventHandler(MouseEvent.MOUSE_DRAGGED, zoomInDragHandler);
         registerInputEventHandler(MouseEvent.MOUSE_RELEASED, zoomInEndHandler);
         registerInputEventHandler(MouseEvent.MOUSE_CLICKED, zoomOutHandler);
-        registerInputEventHandler(MouseEvent.MOUSE_CLICKED, zoomOriginHandler);
-        registerInputEventHandler(ScrollEvent.SCROLL, zoomScrollHandler);
-        registerInputEventHandler(MouseEvent.MOUSE_PRESSED, panStartHandler);
-        registerInputEventHandler(MouseEvent.MOUSE_DRAGGED, panDragHandler);
-        registerInputEventHandler(MouseEvent.MOUSE_RELEASED, panEndHandler);
+//        registerInputEventHandler(MouseEvent.MOUSE_CLICKED, zoomOriginHandler);
+//        registerInputEventHandler(ScrollEvent.SCROLL, zoomScrollHandler);
+        registerInputEventHandler(ScrollEvent.SCROLL, panScrollHandler);
+//        registerInputEventHandler(MouseEvent.MOUSE_PRESSED, panStartHandler);
+//        registerInputEventHandler(MouseEvent.MOUSE_DRAGGED, panDragHandler);
+//        registerInputEventHandler(MouseEvent.MOUSE_RELEASED, panEndHandler);
     }
 
     private void uninstallCursor() {
